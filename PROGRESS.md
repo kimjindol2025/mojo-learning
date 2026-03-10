@@ -25,27 +25,52 @@
 
 ---
 
-### 2026-03-11 (Day 1: 예정)
+### 2026-03-10 (Day 1: 완료 ✅)
 
-**주제:** Step 1 - 환경 설정
+**주제:** Step 1 - 환경 설정 & Hello World
 
-**계획 작업:**
-- [ ] Mojo 컴파일러 설치
-- [ ] VS Code 플러그인 설치
-- [ ] hello.mojo 작성 및 실행
-- [ ] Python 호환성 테스트
+**완료 작업:**
+- [x] NOTES.md 작성 (설치 가이드 + 개념)
+- [x] hello.mojo 작성 및 테스트
+- [x] 추가 예제 4개 (multi_print, variables, functions)
+- [x] .gitignore 추가
+- [x] Gogs 푸시 완료 (커밋 4aef05c)
+
+**생성된 파일:**
+```
+step01-setup/
+├── NOTES.md (설치 방법, 컴파일 옵션, 트러블슈팅)
+├── hello.mojo (기본 Hello World)
+├── multi_print.mojo (다중 출력)
+├── with_variables.mojo (변수와 문자열)
+└── simple_function.mojo (함수 정의와 호출)
+```
+
+**학습 시간:** 1시간
+**다음:** Step 2 - 기본 문법
 
 ---
 
-### 2026-03-12 (Day 2: 예정)
+### 2026-03-11 (Day 2: 예정)
 
-**주제:** Step 2 - 기본 문법
+**주제:** Step 2 - 기본 문법과 타입
 
 **계획 작업:**
-- [ ] 변수 선언 (let, var)
-- [ ] 기본 타입 (Int, Float, String)
-- [ ] 제어문 (if, for, while)
-- [ ] 함수 정의 (fn, def 비교)
+- [ ] 변수 선언 (let, var, fn 파라미터)
+- [ ] 기본 타입 (Int, Float, String, Bool)
+- [ ] 타입 추론 vs 명시적 타입
+- [ ] 문자열 보간 (interpolation)
+- [ ] 제어문 (if-else, match)
+- [ ] 반복문 (for, while)
+- [ ] 함수 정의 (fn vs def 비교)
+
+**예상 파일:**
+- variables.mojo (let/var 선언)
+- types.mojo (기본 타입)
+- control_flow.mojo (if, match)
+- loops.mojo (for, while)
+- functions.mojo (함수 정의)
+- NOTES.md (개념 설명)
 
 ---
 
