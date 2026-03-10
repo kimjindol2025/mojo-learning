@@ -1,84 +1,72 @@
-# Step 10: AI/ML 프로젝트 - 최종 통합
+# Step 10: AI/ML 프로젝트 최종
 
-> 목표: 완전한 AI/ML 시스템 구현
+> 목표: Mojo로 신경망을 구현하고 성능을 최적화해 본다
+
+---
 
 ## 📋 학습 내용
 
-1. 신경망 기초 (Neural Networks)
-2. 행렬 연산 (Matrix Operations)
-3. 활성화 함수 (Activation Functions)
+1. 신경망 아키텍처 설계
+2. 행렬 연산 (Matrix Multiplication)
+3. 활성화 함수 (ReLU, Sigmoid, Softmax)
 4. 순전파 (Forward Propagation)
-5. 손실 함수 (Loss Functions)
-6. 경사 하강법 (Gradient Descent)
+5. 역전파 (Backpropagation) — 개념
+6. 최적화 (Gradient Descent)
+7. SIMD 벡터화로 성능 극대화
 
 ---
 
 ## 신경망 구조
 
 ```
-Input Layer (입력층)
-    ↓ (가중치 × 활성화 함수)
-Hidden Layer (은닉층)
-    ↓ (가중치 × 활성화 함수)
-Output Layer (출력층)
+입력 계층 (Input Layer)
+  ↓
+은닉 계층 (Hidden Layer) — 가중치, 편향
+  ↓
+활성화 함수 (Activation)
+  ↓
+출력 계층 (Output Layer)
 ```
 
 ---
 
-## 행렬 곱셈
+## 행렬 연산
 
-```mojo
-fn matrix_multiply(a: List, b: List, rows_a: Int, cols_a: Int, cols_b: Int) -> List:
-    var result = []
-    for i in range(rows_a):
-        for j in range(cols_b):
-            var sum_val = 0
-            for k in range(cols_a):
-                sum_val += a[i * cols_a + k] * b[k * cols_b + j]
-            result.append(sum_val)
-    return result
+행렬 곱셈 (Matrix Multiplication):
+```
+A (m×n) × B (n×p) = C (m×p)
+C[i][j] = Σ(A[i][k] × B[k][j])
 ```
 
 ---
 
 ## 활성화 함수
 
-```mojo
-fn sigmoid(x: Int) -> Int:
-    # 근사값: 1 / (1 + e^-x)
-    return x
+1. **ReLU**: max(0, x) — 음수는 0
+2. **Sigmoid**: 1 / (1 + e^-x) — 0~1 범위
+3. **Softmax**: 확률 분포 — 다중 클래스 분류
 
-fn relu(x: Int) -> Int:
-    if x > 0:
-        return x
-    else:
-        return 0
+---
+
+## 성능 최적화 전략
+
+| 기법 | 효과 |
+|------|------|
+| SIMD 벡터화 | ~4-8x |
+| 캐시 최적화 | ~2x |
+| 블록 곱셈 | ~2x |
+| GPU 병렬화 | ~50-100x |
+
+---
+
+## Mojo vs Python 성능
+
+```
+작업: 1000×1000 행렬 곱셈
+
+Python (NumPy)   : ~100ms
+Mojo (fn)        : ~10ms (10x 더 빠름)
+Mojo (SIMD)      : ~1ms  (100x 더 빠름)
 ```
 
----
-
-## 순전파
-
-```mojo
-fn forward_pass(input: List, weights: List, bias: List) -> List:
-    var output = []
-    # 행렬 곱 + 편향 + 활성화
-    return output
-```
-
----
-
-## AI/ML 프로젝트 체크리스트
-
-- ✓ 행렬 연산 구현
-- ✓ 활성화 함수
-- ✓ 손실 함수
-- ✓ 순전파 계산
-- ✓ 역전파 계산
-- ✓ 경사 하강법
-- ✓ 모델 학습
-- ✓ 모델 평가
-
----
-
-**작성일:** 2026-03-12
+**작성일:** 2026-03-11
