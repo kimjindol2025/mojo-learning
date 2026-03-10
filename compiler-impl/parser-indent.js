@@ -335,6 +335,18 @@ class ParserIndent {
 
   parseExpressionStatement() {
     const expr = this.parseExpression();
+
+    // Assignment: identifier = value (e.g., message = greet(...))
+    if (this.match(TokenType.ASSIGN)) {
+      this.advance();
+      const value = this.parseExpression();
+      return {
+        type: "Assignment",
+        target: expr,
+        value,
+      };
+    }
+
     return {
       type: "ExpressionStatement",
       expression: expr,

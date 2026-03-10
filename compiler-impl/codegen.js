@@ -86,6 +86,8 @@ class CodeGenerator {
   generateStatement(stmt) {
     if (stmt.type === "VariableDeclaration") {
       this.generateVarDecl(stmt);
+    } else if (stmt.type === "Assignment") {
+      this.generateAssignment(stmt);
     } else if (stmt.type === "ExpressionStatement") {
       this.generateExpressionStmt(stmt);
     } else if (stmt.type === "IfStatement") {
@@ -102,6 +104,12 @@ class CodeGenerator {
   generateVarDecl(decl) {
     const valueCode = decl.value ? this.generateExpression(decl.value) : "None";
     this.emit(`${decl.name} = ${valueCode}`);
+  }
+
+  generateAssignment(assign) {
+    const target = this.generateExpression(assign.target);
+    const value = this.generateExpression(assign.value);
+    this.emit(`${target} = ${value}`);
   }
 
   generateExpressionStmt(stmt) {
