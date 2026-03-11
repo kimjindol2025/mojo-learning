@@ -281,6 +281,13 @@ class CodeGenerator {
       return `${object}[${index}]`;
     }
 
+    if (expr.type === "StructLiteral") {
+      const fields = Object.entries(expr.fields)
+        .map(([key, value]) => `"${key}": ${this.generateExpression(value)}`)
+        .join(", ");
+      return `{${fields}}`;
+    }
+
     if (expr.type === "MatchExpression") {
       return this.generateMatchExpression(expr);
     }

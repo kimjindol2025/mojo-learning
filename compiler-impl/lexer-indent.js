@@ -41,6 +41,7 @@ const TokenType = {
   STAR: "STAR",
   SLASH: "SLASH",
   PERCENT: "PERCENT",
+  POWER: "POWER",
   ASSIGN: "ASSIGN",
   PLUS_ASSIGN: "PLUS_ASSIGN",
   MINUS_ASSIGN: "MINUS_ASSIGN",
@@ -166,6 +167,26 @@ class IndentationLexer {
     return indent;
   }
 
+  readDocstring() {
+    // Skip opening """
+    this.advance(); // first "
+    this.advance(); // second "
+    this.advance(); // third "
+
+    let value = "";
+    while (true) {
+      if (this.peek() === "\0") break;
+      if (this.peek() === '"' && this.peek(1) === '"' && this.peek(2) === '"') {
+        this.advance(); // first "
+        this.advance(); // second "
+        this.advance(); // third "
+        break;
+      }
+      value += this.advance();
+    }
+    return value;
+  }
+
   readString() {
     const quote = this.advance();
     let value = "";
@@ -250,10 +271,17 @@ class IndentationLexer {
           : TokenType.FLOAT;
         this.tokens.push(new Token(type, number, line, column));
       }
-      // Strings
+      // Strings and Docstrings
       else if (char === '"' || char === "'") {
-        const string = this.readString();
-        this.tokens.push(new Token(TokenType.STRING, string, line, column));
+        // Check for docstring (""" or ''')
+        if ((char === '"' && this.peek(1) === '"' && this.peek(2) === '"') ||
+            (char === "'" && this.peek(1) === "'" && this.peek(2) === "'")) {
+          const string = this.readDocstring();
+          this.tokens.push(new Token(TokenType.STRING, string, line, column));
+        } else {
+          const string = this.readString();
+          this.tokens.push(new Token(TokenType.STRING, string, line, column));
+        }
       }
       // Identifiers and Keywords
       else if (/[a-zA-Z_]/.test(char)) {
@@ -285,7 +313,10 @@ class IndentationLexer {
         }
       } else if (char === "*") {
         this.advance();
-        if (this.peek() === "=") {
+        if (this.peek() === "*") {
+          this.advance();
+          this.tokens.push(new Token(TokenType.POWER, "**", line, column));
+        } else if (this.peek() === "=") {
           this.advance();
           this.tokens.push(new Token(TokenType.STAR_ASSIGN, "*=", line, column));
         } else {
@@ -361,6 +392,12 @@ class IndentationLexer {
       } else if (char === "]") {
         this.advance();
         this.tokens.push(new Token(TokenType.RBRACK, "]", line, column));
+      } else if (char === "{") {
+        this.advance();
+        this.tokens.push(new Token(TokenType.LBRACE, "{", line, column));
+      } else if (char === "}") {
+        this.advance();
+        this.tokens.push(new Token(TokenType.RBRACE, "}", line, column));
       } else if (char === ",") {
         this.advance();
         this.tokens.push(new Token(TokenType.COMMA, ",", line, column));

@@ -165,6 +165,11 @@ class ParserIndent {
       this.skipNewlines();
       if (this.match(TokenType.DEDENT)) break;
 
+      // Skip var/let/mut keywords
+      if (this.match(TokenType.VAR, TokenType.LET, TokenType.MUT)) {
+        this.advance();
+      }
+
       const fieldName = this.peek().value;
       this.advance();
       this.consume(TokenType.COLON, "Expected ':'");
@@ -187,7 +192,7 @@ class ParserIndent {
 
   parseIndentedBlock() {
     const statements = [];
-    const maxIterations = 1000;
+    const maxIterations = 5000;
     let iterations = 0;
 
     while (!this.match(TokenType.DEDENT) && !this.match(TokenType.EOF) && iterations < maxIterations) {
@@ -593,7 +598,24 @@ class ParserIndent {
       };
     }
 
-    return this.parsePostfix();
+    return this.parseExponentiation();
+  }
+
+  parseExponentiation() {
+    let left = this.parsePostfix();
+
+    while (this.match(TokenType.POWER)) {
+      const op = this.advance().value;
+      const right = this.parsePostfix();
+      left = {
+        type: "BinaryOp",
+        operator: op,
+        left,
+        right,
+      };
+    }
+
+    return left;
   }
 
   parsePostfix() {
@@ -630,6 +652,45 @@ class ParserIndent {
           type: "IndexAccess",
           object: expr,
           index,
+        };
+      } else if (this.match(TokenType.LBRACE) && expr.type === "Identifier") {
+        // Struct literal: StructName { field1: value1, field2: value2 }
+        this.advance();
+        const fields = {};
+        this.skipNewlines();
+
+        // Handle indentation within struct literal
+        let inIndent = false;
+        if (this.match(TokenType.INDENT)) {
+          this.advance();
+          inIndent = true;
+        }
+
+        while (!this.match(TokenType.RBRACE) && !this.match(TokenType.EOF)) {
+          this.skipNewlines();
+          if (this.match(TokenType.RBRACE)) break;
+          if (this.match(TokenType.DEDENT)) {
+            if (inIndent) {
+              this.advance();
+              inIndent = false;
+            }
+            continue;
+          }
+
+          const fieldName = this.peek().value;
+          this.advance();
+          this.consume(TokenType.COLON, "Expected ':'");
+          const fieldValue = this.parseExpression();
+          fields[fieldName] = fieldValue;
+
+          if (this.match(TokenType.COMMA)) this.advance();
+          this.skipNewlines();
+        }
+        this.consume(TokenType.RBRACE, "Expected '}'");
+        expr = {
+          type: "StructLiteral",
+          structName: expr.name,
+          fields,
         };
       } else {
         break;

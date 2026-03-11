@@ -12,6 +12,7 @@ const path = require("path");
 const { IndentationLexer } = require("./lexer-indent");
 const { ParserIndent } = require("./parser-indent");
 const { CodeGenerator } = require("./codegen");
+const { SemanticAnalyzer } = require("./semantic-analyzer");
 
 class MojoCompilerIndent {
   constructor(sourceCode, filename = "untitled.mojo") {
@@ -42,8 +43,23 @@ class MojoCompilerIndent {
       }
       console.log(`  ✓ Generated AST with ${program.items.length} items`);
 
+      // Phase 2.5: Semantic Analysis
+      console.log("[2.5/4] Performing semantic analysis...");
+      const semanticAnalyzer = new SemanticAnalyzer();
+      const semanticResult = semanticAnalyzer.analyze(program);
+      if (semanticResult.warnings.length > 0) {
+        semanticResult.warnings.forEach((warn) => {
+          console.log(`  ⚠ ${warn}`);
+        });
+      }
+      if (!semanticResult.success) {
+        errors.push(...semanticResult.errors);
+        return { success: false, errors };
+      }
+      console.log("  ✓ Semantic analysis complete");
+
       // Phase 3: Code Generation (Python)
-      console.log("[3/3] Generating Python code...");
+      console.log("[3/4] Generating Python code...");
       const generator = new CodeGenerator();
       const pythonCode = generator.generate(program);
       console.log("  ✓ Code generation complete");
