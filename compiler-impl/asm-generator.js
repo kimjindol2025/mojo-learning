@@ -116,7 +116,8 @@ class AssemblyGenerator {
       }
 
       if (inFunction && currentFunc) {
-        if (!line.endsWith(":") && line !== "entry:") {
+        // Include labels (bb0:, bb1:, etc.) - they're needed for branch targets
+        if (line !== "entry:") {
           currentFunc.instructions.push(line);
         }
       }
@@ -256,6 +257,33 @@ class AssemblyGenerator {
 
     if (!instr) return;
 
+    // Comparison: %t0 = sdiv i64 %a, 1  (comparison treated as sdiv in LLVM IR)
+    // Actually, comparisons come as: %t0 = icmp sle i64 %n, 1
+    const cmpMatch = instr.match(/^(%\w+)\s*=\s*icmp\s+(\w+)\s+(\S+)\s+([^,]+),\s*(.+)$/);
+    if (cmpMatch) {
+      const [, result, predicate, type, left, right] = cmpMatch;
+      const leftVal = this.getValue(left.trim(), varMap);
+      const rightVal = this.getValue(right.trim(), varMap);
+
+      // Generate comparison
+      this.emit(`  cmpq ${rightVal}, ${leftVal}`);  // cmp right, left (Intel syntax-like)
+
+      // Store result (1 if true, 0 if false) using setcc instruction
+      const setccOp = this.mapSetCC(predicate);
+      this.emit(`  ${setccOp} %al`);
+      this.emit(`  movzbl %al, %eax`);  // Zero-extend to 64-bit
+      this.emit(`  movq %rax, %r10`);   // Save to r10 (temp result register)
+
+      // Store result to variable
+      const resultLoc = varMap[result.replace("%", "")];
+      if (resultLoc) {
+        if (resultLoc.type === "mem") {
+          this.emit(`  movq %r10, ${resultLoc.offset}(%rbp)`);
+        }
+      }
+      return;
+    }
+
     // Binary operation: %t0 = add i64 %a, %b
     const binOpMatch = instr.match(/^(%\w+)\s*=\s*(\w+)\s+(\S+)\s+([^,]+),\s*(.+)$/);
     if (binOpMatch) {
@@ -326,14 +354,42 @@ class AssemblyGenerator {
       return;
     }
 
-    // Skip labels and branches (for now, just comment them)
+    // Labels: bb0:, bb1:, etc.
     if (instr.endsWith(":")) {
-      this.emit(`${instr}`);
+      this.emit(`.L${instr}`);  // Convert bb0: to .Lbb0:
       return;
     }
 
-    if (instr.includes("br")) {
-      this.emit(`  # ${instr}`);
+    // Conditional branch: br i1 %cond, label %bb0, label %bb1
+    const brMatch = instr.match(/^br\s+i1\s+(%\w+),\s*label\s+%(\w+),\s*label\s+%(\w+)$/);
+    if (brMatch) {
+      const [, cond, trueLabel, falseLabel] = brMatch;
+      const condName = cond.replace("%", "");
+      const condLoc = varMap[condName];
+
+      // Load condition and test
+      if (condLoc) {
+        if (condLoc.type === "mem") {
+          this.emit(`  movq ${condLoc.offset}(%rbp), %r10`);
+        } else {
+          this.emit(`  movq %${condLoc.value}, %r10`);
+        }
+      } else {
+        this.emit(`  movq %${condName}, %r10`);
+      }
+
+      // Test and branch
+      this.emit(`  testq %r10, %r10`);
+      this.emit(`  jnz .L${trueLabel}`);    // Jump if not zero (true)
+      this.emit(`  jmp .L${falseLabel}`);   // Jump to false
+      return;
+    }
+
+    // Unconditional branch: br label %bb2
+    const brUncondMatch = instr.match(/^br\s+label\s+%(\w+)$/);
+    if (brUncondMatch) {
+      const [, label] = brUncondMatch;
+      this.emit(`  jmp .L${label}`);
       return;
     }
   }
@@ -382,6 +438,23 @@ class AssemblyGenerator {
       "xor": "xorq"
     };
     return opMap[llvmOp] || "addq";
+  }
+
+  /**
+   * Map LLVM comparison predicates to x86-64 setcc instructions
+   * @param {string} predicate - LLVM predicate (sle, eq, ne, slt, etc.)
+   * @returns {string} - x86-64 setcc instruction
+   */
+  mapSetCC(predicate) {
+    const setccMap = {
+      "sle": "setle",   // signed less or equal
+      "slt": "setl",    // signed less than
+      "sge": "setge",   // signed greater or equal
+      "sgt": "setg",    // signed greater than
+      "eq": "sete",     // equal
+      "ne": "setne"     // not equal
+    };
+    return setccMap[predicate] || "sete";
   }
 
   /**

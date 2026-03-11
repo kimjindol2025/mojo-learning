@@ -1,0 +1,1376 @@
+[
+  {
+    "type": "FN",
+    "value": "fn",
+    "line": 2,
+    "column": 1
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "add",
+    "line": 2,
+    "column": 4
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 2,
+    "column": 7
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "a",
+    "line": 2,
+    "column": 8
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 2,
+    "column": 9
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "Int",
+    "line": 2,
+    "column": 11
+  },
+  {
+    "type": "COMMA",
+    "value": ",",
+    "line": 2,
+    "column": 14
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "b",
+    "line": 2,
+    "column": 16
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 2,
+    "column": 17
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "Int",
+    "line": 2,
+    "column": 19
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 2,
+    "column": 22
+  },
+  {
+    "type": "ARROW",
+    "value": "->",
+    "line": 2,
+    "column": 24
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "Int",
+    "line": 2,
+    "column": 27
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 2,
+    "column": 30
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 2,
+    "column": 31
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 3,
+    "column": 5
+  },
+  {
+    "type": "RETURN",
+    "value": "return",
+    "line": 3,
+    "column": 5
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "a",
+    "line": 3,
+    "column": 12
+  },
+  {
+    "type": "PLUS",
+    "value": "+",
+    "line": 3,
+    "column": 14
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "b",
+    "line": 3,
+    "column": 16
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 3,
+    "column": 17
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 6,
+    "column": 1
+  },
+  {
+    "type": "FN",
+    "value": "fn",
+    "line": 6,
+    "column": 1
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "test_vars",
+    "line": 6,
+    "column": 4
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 6,
+    "column": 13
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 6,
+    "column": 14
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 6,
+    "column": 15
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 6,
+    "column": 16
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 7,
+    "column": 5
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x",
+    "line": 7,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 7,
+    "column": 7
+  },
+  {
+    "type": "INTEGER",
+    "value": "5",
+    "line": 7,
+    "column": 9
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 7,
+    "column": 10
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y",
+    "line": 8,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 8,
+    "column": 7
+  },
+  {
+    "type": "INTEGER",
+    "value": "10",
+    "line": 8,
+    "column": 9
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 8,
+    "column": 11
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "z",
+    "line": 9,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 9,
+    "column": 7
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x",
+    "line": 9,
+    "column": 9
+  },
+  {
+    "type": "PLUS",
+    "value": "+",
+    "line": 9,
+    "column": 11
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "y",
+    "line": 9,
+    "column": 13
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 9,
+    "column": 14
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "result",
+    "line": 10,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 10,
+    "column": 12
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "z",
+    "line": 10,
+    "column": 14
+  },
+  {
+    "type": "STAR",
+    "value": "*",
+    "line": 10,
+    "column": 16
+  },
+  {
+    "type": "INTEGER",
+    "value": "2",
+    "line": 10,
+    "column": 18
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 10,
+    "column": 19
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 13,
+    "column": 1
+  },
+  {
+    "type": "FN",
+    "value": "fn",
+    "line": 13,
+    "column": 1
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "test_if",
+    "line": 13,
+    "column": 4
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 13,
+    "column": 11
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "n",
+    "line": 13,
+    "column": 12
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 13,
+    "column": 13
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "Int",
+    "line": 13,
+    "column": 15
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 13,
+    "column": 18
+  },
+  {
+    "type": "ARROW",
+    "value": "->",
+    "line": 13,
+    "column": 20
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "Int",
+    "line": 13,
+    "column": 23
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 13,
+    "column": 26
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 13,
+    "column": 27
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 14,
+    "column": 5
+  },
+  {
+    "type": "IF",
+    "value": "if",
+    "line": 14,
+    "column": 5
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "n",
+    "line": 14,
+    "column": 8
+  },
+  {
+    "type": "GT",
+    "value": ">",
+    "line": 14,
+    "column": 10
+  },
+  {
+    "type": "INTEGER",
+    "value": "0",
+    "line": 14,
+    "column": 12
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 14,
+    "column": 13
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 14,
+    "column": 14
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 15,
+    "column": 9
+  },
+  {
+    "type": "RETURN",
+    "value": "return",
+    "line": 15,
+    "column": 9
+  },
+  {
+    "type": "INTEGER",
+    "value": "1",
+    "line": 15,
+    "column": 16
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 15,
+    "column": 17
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 16,
+    "column": 5
+  },
+  {
+    "type": "ELSE",
+    "value": "else",
+    "line": 16,
+    "column": 5
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 16,
+    "column": 9
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 16,
+    "column": 10
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 17,
+    "column": 9
+  },
+  {
+    "type": "RETURN",
+    "value": "return",
+    "line": 17,
+    "column": 9
+  },
+  {
+    "type": "INTEGER",
+    "value": "0",
+    "line": 17,
+    "column": 16
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 17,
+    "column": 17
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 20,
+    "column": 1
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 20,
+    "column": 1
+  },
+  {
+    "type": "FN",
+    "value": "fn",
+    "line": 20,
+    "column": 1
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "test_loop",
+    "line": 20,
+    "column": 4
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 20,
+    "column": 13
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "n",
+    "line": 20,
+    "column": 14
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 20,
+    "column": 15
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "Int",
+    "line": 20,
+    "column": 17
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 20,
+    "column": 20
+  },
+  {
+    "type": "ARROW",
+    "value": "->",
+    "line": 20,
+    "column": 22
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "Int",
+    "line": 20,
+    "column": 25
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 20,
+    "column": 28
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 20,
+    "column": 29
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 21,
+    "column": 5
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "sum",
+    "line": 21,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 21,
+    "column": 9
+  },
+  {
+    "type": "INTEGER",
+    "value": "0",
+    "line": 21,
+    "column": 11
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 21,
+    "column": 12
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "i",
+    "line": 22,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 22,
+    "column": 7
+  },
+  {
+    "type": "INTEGER",
+    "value": "1",
+    "line": 22,
+    "column": 9
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 22,
+    "column": 10
+  },
+  {
+    "type": "WHILE",
+    "value": "while",
+    "line": 23,
+    "column": 5
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "i",
+    "line": 23,
+    "column": 11
+  },
+  {
+    "type": "LE",
+    "value": "<=",
+    "line": 23,
+    "column": 13
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "n",
+    "line": 23,
+    "column": 16
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 23,
+    "column": 17
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 23,
+    "column": 18
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 24,
+    "column": 9
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "sum",
+    "line": 24,
+    "column": 9
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 24,
+    "column": 13
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "sum",
+    "line": 24,
+    "column": 15
+  },
+  {
+    "type": "PLUS",
+    "value": "+",
+    "line": 24,
+    "column": 19
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "i",
+    "line": 24,
+    "column": 21
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 24,
+    "column": 22
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "i",
+    "line": 25,
+    "column": 9
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 25,
+    "column": 11
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "i",
+    "line": 25,
+    "column": 13
+  },
+  {
+    "type": "PLUS",
+    "value": "+",
+    "line": 25,
+    "column": 15
+  },
+  {
+    "type": "INTEGER",
+    "value": "1",
+    "line": 25,
+    "column": 17
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 25,
+    "column": 18
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 26,
+    "column": 5
+  },
+  {
+    "type": "RETURN",
+    "value": "return",
+    "line": 26,
+    "column": 5
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "sum",
+    "line": 26,
+    "column": 12
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 26,
+    "column": 15
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 29,
+    "column": 1
+  },
+  {
+    "type": "FN",
+    "value": "fn",
+    "line": 29,
+    "column": 1
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "test_literals",
+    "line": 29,
+    "column": 4
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 29,
+    "column": 17
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 29,
+    "column": 18
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 29,
+    "column": 19
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 29,
+    "column": 20
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 30,
+    "column": 5
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "name",
+    "line": 30,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 30,
+    "column": 10
+  },
+  {
+    "type": "STRING",
+    "value": "hello",
+    "line": 30,
+    "column": 12
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 30,
+    "column": 19
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "count",
+    "line": 31,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 31,
+    "column": 11
+  },
+  {
+    "type": "INTEGER",
+    "value": "42",
+    "line": 31,
+    "column": 13
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 31,
+    "column": 15
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "ratio",
+    "line": 32,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 32,
+    "column": 11
+  },
+  {
+    "type": "FLOAT",
+    "value": "3.14",
+    "line": 32,
+    "column": 13
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 32,
+    "column": 17
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "flag",
+    "line": 33,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 33,
+    "column": 10
+  },
+  {
+    "type": "TRUE",
+    "value": "true",
+    "line": 33,
+    "column": 12
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 33,
+    "column": 16
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "items",
+    "line": 34,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 34,
+    "column": 11
+  },
+  {
+    "type": "LBRACK",
+    "value": "[",
+    "line": 34,
+    "column": 13
+  },
+  {
+    "type": "INTEGER",
+    "value": "1",
+    "line": 34,
+    "column": 14
+  },
+  {
+    "type": "COMMA",
+    "value": ",",
+    "line": 34,
+    "column": 15
+  },
+  {
+    "type": "INTEGER",
+    "value": "2",
+    "line": 34,
+    "column": 17
+  },
+  {
+    "type": "COMMA",
+    "value": ",",
+    "line": 34,
+    "column": 18
+  },
+  {
+    "type": "INTEGER",
+    "value": "3",
+    "line": 34,
+    "column": 20
+  },
+  {
+    "type": "RBRACK",
+    "value": "]",
+    "line": 34,
+    "column": 21
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 34,
+    "column": 22
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 37,
+    "column": 1
+  },
+  {
+    "type": "FN",
+    "value": "fn",
+    "line": 37,
+    "column": 1
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "fibonacci",
+    "line": 37,
+    "column": 4
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 37,
+    "column": 13
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "n",
+    "line": 37,
+    "column": 14
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 37,
+    "column": 15
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "Int",
+    "line": 37,
+    "column": 17
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 37,
+    "column": 20
+  },
+  {
+    "type": "ARROW",
+    "value": "->",
+    "line": 37,
+    "column": 22
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "Int",
+    "line": 37,
+    "column": 25
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 37,
+    "column": 28
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 37,
+    "column": 29
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 38,
+    "column": 5
+  },
+  {
+    "type": "IF",
+    "value": "if",
+    "line": 38,
+    "column": 5
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "n",
+    "line": 38,
+    "column": 8
+  },
+  {
+    "type": "LE",
+    "value": "<=",
+    "line": 38,
+    "column": 10
+  },
+  {
+    "type": "INTEGER",
+    "value": "1",
+    "line": 38,
+    "column": 13
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 38,
+    "column": 14
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 38,
+    "column": 15
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 39,
+    "column": 9
+  },
+  {
+    "type": "RETURN",
+    "value": "return",
+    "line": 39,
+    "column": 9
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "n",
+    "line": 39,
+    "column": 16
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 39,
+    "column": 17
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 40,
+    "column": 5
+  },
+  {
+    "type": "ELSE",
+    "value": "else",
+    "line": 40,
+    "column": 5
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 40,
+    "column": 9
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 40,
+    "column": 10
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 41,
+    "column": 9
+  },
+  {
+    "type": "RETURN",
+    "value": "return",
+    "line": 41,
+    "column": 9
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "fibonacci",
+    "line": 41,
+    "column": 16
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 41,
+    "column": 25
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "n",
+    "line": 41,
+    "column": 26
+  },
+  {
+    "type": "MINUS",
+    "value": "-",
+    "line": 41,
+    "column": 28
+  },
+  {
+    "type": "INTEGER",
+    "value": "1",
+    "line": 41,
+    "column": 30
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 41,
+    "column": 31
+  },
+  {
+    "type": "PLUS",
+    "value": "+",
+    "line": 41,
+    "column": 33
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "fibonacci",
+    "line": 41,
+    "column": 35
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 41,
+    "column": 44
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "n",
+    "line": 41,
+    "column": 45
+  },
+  {
+    "type": "MINUS",
+    "value": "-",
+    "line": 41,
+    "column": 47
+  },
+  {
+    "type": "INTEGER",
+    "value": "2",
+    "line": 41,
+    "column": 49
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 41,
+    "column": 50
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 41,
+    "column": 51
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 43,
+    "column": 1
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 43,
+    "column": 1
+  },
+  {
+    "type": "FN",
+    "value": "fn",
+    "line": 43,
+    "column": 1
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "main",
+    "line": 43,
+    "column": 4
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 43,
+    "column": 8
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 43,
+    "column": 9
+  },
+  {
+    "type": "COLON",
+    "value": ":",
+    "line": 43,
+    "column": 10
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 43,
+    "column": 11
+  },
+  {
+    "type": "INDENT",
+    "value": null,
+    "line": 44,
+    "column": 5
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "x",
+    "line": 44,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 44,
+    "column": 7
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "add",
+    "line": 44,
+    "column": 9
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 44,
+    "column": 12
+  },
+  {
+    "type": "INTEGER",
+    "value": "5",
+    "line": 44,
+    "column": 13
+  },
+  {
+    "type": "COMMA",
+    "value": ",",
+    "line": 44,
+    "column": 14
+  },
+  {
+    "type": "INTEGER",
+    "value": "3",
+    "line": 44,
+    "column": 16
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 44,
+    "column": 17
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 44,
+    "column": 18
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "result",
+    "line": 45,
+    "column": 5
+  },
+  {
+    "type": "ASSIGN",
+    "value": "=",
+    "line": 45,
+    "column": 12
+  },
+  {
+    "type": "IDENTIFIER",
+    "value": "fibonacci",
+    "line": 45,
+    "column": 14
+  },
+  {
+    "type": "LPAREN",
+    "value": "(",
+    "line": 45,
+    "column": 23
+  },
+  {
+    "type": "INTEGER",
+    "value": "10",
+    "line": 45,
+    "column": 24
+  },
+  {
+    "type": "RPAREN",
+    "value": ")",
+    "line": 45,
+    "column": 26
+  },
+  {
+    "type": "NEWLINE",
+    "value": "\\n",
+    "line": 45,
+    "column": 27
+  },
+  {
+    "type": "DEDENT",
+    "value": null,
+    "line": 46,
+    "column": 1
+  },
+  {
+    "type": "EOF",
+    "value": null,
+    "line": 46,
+    "column": 1
+  }
+]
