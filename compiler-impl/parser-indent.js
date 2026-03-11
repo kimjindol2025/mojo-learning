@@ -465,6 +465,13 @@ class ParserIndent {
     // Use parseMultiplicative to support division: code / 100
     const discriminant = this.parseMultiplicative();
 
+    // Skip newlines and indentation before match body
+    this.skipNewlines();
+    while (this.match(TokenType.INDENT, TokenType.DEDENT)) {
+      this.advance();
+    }
+    this.skipNewlines();
+
     // Check for brace-based match
     if (this.match(TokenType.LBRACE)) {
       return this.parseMatchBraceBased(discriminant);
@@ -478,8 +485,13 @@ class ParserIndent {
     this.consume(TokenType.LBRACE, "Expected '{'");
     const branches = [];
     let defaultBranch = null;
+    const maxIterations = 5000;
+    let iterations = 0;
 
-    while (!this.match(TokenType.RBRACE) && !this.match(TokenType.EOF)) {
+    while (!this.match(TokenType.RBRACE) && !this.match(TokenType.EOF) && iterations < maxIterations) {
+      iterations++;
+      const startPos = this.current;
+
       this.skipNewlines();
       // Skip INDENT/DEDENT tokens within match block
       while (this.match(TokenType.INDENT, TokenType.DEDENT)) {
@@ -500,6 +512,11 @@ class ParserIndent {
         this.consume(TokenType.RBRACE, "Expected '}'");
         branches.push({ pattern, body });
       }
+
+      // If no progress made, skip a token to avoid infinite loop
+      if (this.current === startPos && !this.match(TokenType.RBRACE)) {
+        this.advance();
+      }
     }
 
     this.consume(TokenType.RBRACE, "Expected '}' to close match");
@@ -518,8 +535,13 @@ class ParserIndent {
 
     const branches = [];
     let defaultBranch = null;
+    const maxIterations = 5000;
+    let iterations = 0;
 
-    while (!this.match(TokenType.DEDENT) && !this.match(TokenType.EOF)) {
+    while (!this.match(TokenType.DEDENT) && !this.match(TokenType.EOF) && iterations < maxIterations) {
+      iterations++;
+      const startPos = this.current;
+
       this.skipNewlines();
       if (this.match(TokenType.DEDENT)) break;
 
@@ -532,6 +554,11 @@ class ParserIndent {
         const body = this.parseLogicalOr();
         branches.push({ pattern, body });
         this.skipNewlines();
+      }
+
+      // If no progress, skip a token
+      if (this.current === startPos && !this.match(TokenType.DEDENT)) {
+        this.advance();
       }
     }
 
