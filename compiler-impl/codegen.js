@@ -231,12 +231,32 @@ class CodeGenerator {
     if (expr.type === "BinaryOp") {
       const left = this.generateExpression(expr.left);
       const right = this.generateExpression(expr.right);
-      return `${left} ${expr.operator} ${right}`;
+      // Convert Mojo operators to Python equivalents
+      let op = expr.operator;
+      if (op === "&&") op = "and";
+      else if (op === "||") op = "or";
+      return `${left} ${op} ${right}`;
     }
 
     if (expr.type === "UnaryOp") {
       const operand = this.generateExpression(expr.operand);
-      return `${expr.operator}${operand}`;
+      // Convert Mojo operators to Python equivalents
+      let op = expr.operator;
+      if (op === "!" || op === "not") {
+        // Wrap operand in parens if needed
+        const needsParens = expr.operand.type !== "Identifier" &&
+                           expr.operand.type !== "IntLiteral" &&
+                           expr.operand.type !== "FloatLiteral" &&
+                           expr.operand.type !== "StringLiteral" &&
+                           expr.operand.type !== "BoolLiteral";
+        if (needsParens) {
+          return `not (${operand})`;
+        } else {
+          return `not ${operand}`;
+        }
+      } else {
+        return `${op}${operand}`;
+      }
     }
 
     if (expr.type === "Call") {
@@ -261,7 +281,37 @@ class CodeGenerator {
       return `${object}[${index}]`;
     }
 
+    if (expr.type === "MatchExpression") {
+      return this.generateMatchExpression(expr);
+    }
+
     return "error";
+  }
+
+  generateMatchExpression(match) {
+    // Convert match expression to Python ternary chains
+    // match x { 1 { "a" } 2 { "b" } else { "c" } }
+    // becomes: ("a" if x == 1 else ("b" if x == 2 else "c"))
+
+    const discriminant = this.generateExpression(match.discriminant);
+    let result = null;
+
+    // Build from the end backwards (last branch first for else)
+    if (match.defaultBranch) {
+      result = this.generateExpression(match.defaultBranch);
+    } else {
+      result = "None";
+    }
+
+    // Reverse iterate through branches
+    for (let i = match.branches.length - 1; i >= 0; i--) {
+      const branch = match.branches[i];
+      const patternCode = this.generateExpression(branch.pattern);
+      const armCode = this.generateExpression(branch.body);
+      result = `(${armCode} if ${discriminant} == ${patternCode} else ${result})`;
+    }
+
+    return result;
   }
 
   hasMainFunction(program) {

@@ -362,13 +362,53 @@ class ParserIndent {
     this.consume(TokenType.RETURN, "Expected 'return'");
     let value = null;
     if (!this.match(TokenType.NEWLINE, TokenType.DEDENT, TokenType.EOF)) {
-      value = this.parseExpression();
+      // Check for match expression
+      if (this.match(TokenType.MATCH)) {
+        value = this.parseMatchExpression();
+      } else {
+        value = this.parseExpression();
+      }
     }
 
     return {
       type: "ReturnStatement",
       value,
       line,
+    };
+  }
+
+  parseMatchExpression() {
+    this.consume(TokenType.MATCH, "Expected 'match'");
+    const discriminant = this.parseExpression();
+    this.skipNewlines();
+    this.consume(TokenType.INDENT, "Expected indented block for match");
+
+    const branches = [];
+    let defaultBranch = null;
+
+    while (!this.match(TokenType.DEDENT) && !this.match(TokenType.EOF)) {
+      this.skipNewlines();
+      if (this.match(TokenType.DEDENT)) break;
+
+      if (this.match(TokenType.ELSE)) {
+        this.advance();
+        defaultBranch = this.parseExpression();
+        this.skipNewlines();
+      } else {
+        const pattern = this.parseExpression();
+        const body = this.parseExpression();
+        branches.push({ pattern, body });
+        this.skipNewlines();
+      }
+    }
+
+    this.consume(TokenType.DEDENT, "Expected dedent");
+
+    return {
+      type: "MatchExpression",
+      discriminant,
+      branches,
+      defaultBranch,
     };
   }
 
