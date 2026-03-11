@@ -362,12 +362,7 @@ class ParserIndent {
     this.consume(TokenType.RETURN, "Expected 'return'");
     let value = null;
     if (!this.match(TokenType.NEWLINE, TokenType.DEDENT, TokenType.EOF)) {
-      // Check for match expression
-      if (this.match(TokenType.MATCH)) {
-        value = this.parseMatchExpression();
-      } else {
-        value = this.parseExpression();
-      }
+      value = this.parseExpression();
     }
 
     return {
@@ -379,7 +374,48 @@ class ParserIndent {
 
   parseMatchExpression() {
     this.consume(TokenType.MATCH, "Expected 'match'");
-    const discriminant = this.parseExpression();
+    const discriminant = this.parseLogicalOr(); // Use lower precedence to avoid recursion
+
+    // Check for brace-based match
+    if (this.match(TokenType.LBRACE)) {
+      return this.parseMatchBraceBased(discriminant);
+    }
+
+    // Otherwise indentation-based
+    return this.parseMatchIndentationBased(discriminant);
+  }
+
+  parseMatchBraceBased(discriminant) {
+    this.consume(TokenType.LBRACE, "Expected '{'");
+    const branches = [];
+    let defaultBranch = null;
+
+    while (!this.match(TokenType.RBRACE) && !this.match(TokenType.EOF)) {
+      if (this.match(TokenType.ELSE)) {
+        this.advance();
+        this.consume(TokenType.LBRACE, "Expected '{' for else arm");
+        defaultBranch = this.parseLogicalOr();
+        this.consume(TokenType.RBRACE, "Expected '}'");
+      } else {
+        const pattern = this.parsePrimary();
+        this.consume(TokenType.LBRACE, "Expected '{' for pattern");
+        const body = this.parseLogicalOr();
+        this.consume(TokenType.RBRACE, "Expected '}'");
+        branches.push({ pattern, body });
+      }
+    }
+
+    this.consume(TokenType.RBRACE, "Expected '}' to close match");
+
+    return {
+      type: "MatchExpression",
+      discriminant,
+      branches,
+      defaultBranch,
+    };
+  }
+
+  parseMatchIndentationBased(discriminant) {
     this.skipNewlines();
     this.consume(TokenType.INDENT, "Expected indented block for match");
 
@@ -392,11 +428,11 @@ class ParserIndent {
 
       if (this.match(TokenType.ELSE)) {
         this.advance();
-        defaultBranch = this.parseExpression();
+        defaultBranch = this.parseLogicalOr();
         this.skipNewlines();
       } else {
-        const pattern = this.parseExpression();
-        const body = this.parseExpression();
+        const pattern = this.parsePrimary();
+        const body = this.parseLogicalOr();
         branches.push({ pattern, body });
         this.skipNewlines();
       }
@@ -604,6 +640,11 @@ class ParserIndent {
   }
 
   parsePrimary() {
+    // Match expression
+    if (this.match(TokenType.MATCH)) {
+      return this.parseMatchExpression();
+    }
+
     if (this.match(TokenType.INTEGER)) {
       const value = this.peek().value;
       this.advance();

@@ -60,19 +60,11 @@ fn calculate(a: Int, b: Int, op: String) -> String:
         "add" { a + b }
         "subtract" { a - b }
         "multiply" { a * b }
-        "divide" {
-            if b == 0:
-                -1
-            else:
-                a / b
-        }
+        "divide" { a / b }
         else { 0 }
     }
 
-    if result == -1:
-        return "Error: Division by zero"
-    else:
-        return str(a) + " " + operation_symbol(op) + " " + str(b) + " = " + str(result)
+    return str(a) + " " + operation_symbol(op) + " " + str(b) + " = " + str(result)
 
 fn main():
     print("=== Enum/Sum 타입 (패턴 매칭) ===")
