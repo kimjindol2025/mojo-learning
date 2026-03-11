@@ -98,6 +98,10 @@ class CodeGenerator {
       this.generateWhileLoop(stmt);
     } else if (stmt.type === "ReturnStatement") {
       this.generateReturnStatement(stmt);
+    } else if (stmt.type === "BreakStatement") {
+      this.emit("break");
+    } else if (stmt.type === "ContinueStatement") {
+      this.emit("continue");
     }
   }
 
@@ -109,7 +113,8 @@ class CodeGenerator {
   generateAssignment(assign) {
     const target = this.generateExpression(assign.target);
     const value = this.generateExpression(assign.value);
-    this.emit(`${target} = ${value}`);
+    const operator = assign.operator || "=";
+    this.emit(`${target} ${operator} ${value}`);
   }
 
   generateExpressionStmt(stmt) {
@@ -128,6 +133,23 @@ class CodeGenerator {
       }
     }
     this.dedent();
+
+    // Handle elif branches
+    if (stmt.elseIfBranches && stmt.elseIfBranches.length > 0) {
+      for (const elifBranch of stmt.elseIfBranches) {
+        const elifCondition = this.generateExpression(elifBranch.condition);
+        this.emit(`elif ${elifCondition}:`);
+        this.indent();
+        if (elifBranch.body.length === 0) {
+          this.emit("pass");
+        } else {
+          for (const s of elifBranch.body) {
+            this.generateStatement(s);
+          }
+        }
+        this.dedent();
+      }
+    }
 
     if (stmt.elseBranch && stmt.elseBranch.length > 0) {
       this.emit("else:");

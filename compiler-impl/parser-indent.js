@@ -208,6 +208,12 @@ class ParserIndent {
       return this.parseWhileLoop();
     } else if (this.match(TokenType.RETURN)) {
       return this.parseReturnStatement();
+    } else if (this.match(TokenType.BREAK)) {
+      this.advance();
+      return { type: "BreakStatement" };
+    } else if (this.match(TokenType.CONTINUE)) {
+      this.advance();
+      return { type: "ContinueStatement" };
     } else if (!this.match(TokenType.DEDENT, TokenType.EOF, TokenType.NEWLINE)) {
       return this.parseExpressionStatement();
     }
@@ -259,6 +265,22 @@ class ParserIndent {
     const thenBranch = this.parseIndentedBlock();
     this.consume(TokenType.DEDENT, "Expected dedent");
 
+    // Handle elif and else
+    const elseIfBranches = [];
+    while (this.match(TokenType.ELIF)) {
+      this.advance();
+      const elifCondition = this.parseExpression();
+      this.consume(TokenType.COLON, "Expected ':'");
+      this.skipNewlines();
+      this.consume(TokenType.INDENT, "Expected indented block");
+      const elifBranch = this.parseIndentedBlock();
+      this.consume(TokenType.DEDENT, "Expected dedent");
+      elseIfBranches.push({
+        condition: elifCondition,
+        body: elifBranch,
+      });
+    }
+
     let elseBranch = null;
     if (this.match(TokenType.ELSE)) {
       this.advance();
@@ -273,6 +295,7 @@ class ParserIndent {
       type: "IfStatement",
       condition,
       thenBranch,
+      elseIfBranches: elseIfBranches.length > 0 ? elseIfBranches : undefined,
       elseBranch,
       line,
     };
@@ -336,13 +359,21 @@ class ParserIndent {
   parseExpressionStatement() {
     const expr = this.parseExpression();
 
-    // Assignment: identifier = value (e.g., message = greet(...))
-    if (this.match(TokenType.ASSIGN)) {
+    // Assignment: identifier = value, +=, -=, *=, /=
+    if (this.match(
+      TokenType.ASSIGN,
+      TokenType.PLUS_ASSIGN,
+      TokenType.MINUS_ASSIGN,
+      TokenType.STAR_ASSIGN,
+      TokenType.SLASH_ASSIGN
+    )) {
+      const operator = this.peek().value;
       this.advance();
       const value = this.parseExpression();
       return {
         type: "Assignment",
         target: expr,
+        operator,
         value,
       };
     }

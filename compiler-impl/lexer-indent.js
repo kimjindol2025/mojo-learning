@@ -44,6 +44,8 @@ const TokenType = {
   ASSIGN: "ASSIGN",
   PLUS_ASSIGN: "PLUS_ASSIGN",
   MINUS_ASSIGN: "MINUS_ASSIGN",
+  STAR_ASSIGN: "STAR_ASSIGN",
+  SLASH_ASSIGN: "SLASH_ASSIGN",
   EQ: "EQ",
   NE: "NE",
   LT: "LT",
@@ -283,10 +285,20 @@ class IndentationLexer {
         }
       } else if (char === "*") {
         this.advance();
-        this.tokens.push(new Token(TokenType.STAR, "*", line, column));
+        if (this.peek() === "=") {
+          this.advance();
+          this.tokens.push(new Token(TokenType.STAR_ASSIGN, "*=", line, column));
+        } else {
+          this.tokens.push(new Token(TokenType.STAR, "*", line, column));
+        }
       } else if (char === "/") {
         this.advance();
-        this.tokens.push(new Token(TokenType.SLASH, "/", line, column));
+        if (this.peek() === "=") {
+          this.advance();
+          this.tokens.push(new Token(TokenType.SLASH_ASSIGN, "/=", line, column));
+        } else {
+          this.tokens.push(new Token(TokenType.SLASH, "/", line, column));
+        }
       } else if (char === "%") {
         this.advance();
         this.tokens.push(new Token(TokenType.PERCENT, "%", line, column));
