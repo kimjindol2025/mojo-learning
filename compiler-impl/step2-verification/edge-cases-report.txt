@@ -1,0 +1,63 @@
+═══════════════════════════════════════════════════════════
+         EDGE CASE TEST REPORT - Days 5-6 Analysis
+═══════════════════════════════════════════════════════════
+
+TEST SUMMARY
+────────────────────────────────────────────────────────────
+Total tests:      5
+Passed:           3 (60.0%)
+Failed:           2
+Crashed:          0
+
+METRICS
+────────────────────────────────────────────────────────────
+Total tokens:     2411
+Total items:      61
+Total parse time: 20ms
+Avg time/test:    4.00ms
+
+DETAILED RESULTS
+────────────────────────────────────────────────────────────
+
+test_errors:
+  Status:  ❌ FAIL
+  Tokens:  196
+  Items:   10
+  Errors:  3
+  Time:    6ms
+  Lines:   52
+
+test_features:
+  Status:  ✅ PASS
+  Tokens:  630
+  Items:   21
+  Errors:  0
+  Time:    7ms
+  Lines:   135
+
+test_nested:
+  Status:  ✅ PASS
+  Tokens:  449
+  Items:   10
+  Errors:  0
+  Time:    2ms
+  Lines:   77
+
+test_performance:
+  Status:  ❌ FAIL
+  Tokens:  729
+  Items:   10
+  Errors:  1
+  Time:    4ms
+  Lines:   100
+
+test_precedence:
+  Status:  ✅ PASS
+  Tokens:  407
+  Items:   10
+  Errors:  0
+  Time:    1ms
+  Lines:   72
+
+
+═══════════════════════════════════════════════════════════
