@@ -56,13 +56,20 @@ class CodeGenerator {
   }
 
   generateFunction(fn) {
-    // Generate parameters with default values
+    // Generate parameters with default values and variadic support
     const params = fn.parameters.map((p) => {
-      if (p.defaultValue) {
+      let paramStr = p.name;
+
+      // Handle variadic parameter (*args)
+      if (p.isVariadic) {
+        paramStr = `*${paramStr}`;
+      } else if (p.defaultValue) {
+        // Handle default value (not for variadic)
         const defaultCode = this.generateExpression(p.defaultValue);
-        return `${p.name}=${defaultCode}`;
+        paramStr = `${paramStr}=${defaultCode}`;
       }
-      return p.name;
+
+      return paramStr;
     }).join(", ");
 
     // Handle generic types (comment them out since Python doesn't have generics)

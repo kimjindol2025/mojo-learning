@@ -108,6 +108,13 @@ class ParserIndent {
     this.consume(TokenType.LPAREN, "Expected '('");
     const parameters = [];
     while (!this.match(TokenType.RPAREN) && !this.match(TokenType.EOF)) {
+      // Check for variadic parameter (*args)
+      let isVariadic = false;
+      if (this.match(TokenType.STAR)) {
+        this.advance();
+        isVariadic = true;
+      }
+
       const paramName = this.peek().value;
       this.advance();
 
@@ -119,14 +126,15 @@ class ParserIndent {
       }
 
       // Parse default value if present (e.g., x: Int = 10)
+      // Note: Variadic parameters cannot have defaults
       let defaultValue = null;
-      if (this.match(TokenType.ASSIGN)) {
+      if (!isVariadic && this.match(TokenType.ASSIGN)) {
         this.advance();
         // Parse constant expression for default value
         defaultValue = this.parsePrimary();
       }
 
-      parameters.push({ name: paramName, type: paramType, defaultValue });
+      parameters.push({ name: paramName, type: paramType, defaultValue, isVariadic });
 
       if (this.match(TokenType.COMMA)) {
         this.advance();
