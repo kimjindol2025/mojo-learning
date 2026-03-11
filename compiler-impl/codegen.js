@@ -210,7 +210,14 @@ class CodeGenerator {
     }
 
     if (expr.type === "StringLiteral") {
-      return `"${expr.value}"`;
+      // Escape special characters in string
+      const escaped = expr.value
+        .replace(/\\/g, "\\\\")  // Backslash
+        .replace(/"/g, '\\"')    // Double quote
+        .replace(/\n/g, "\\n")   // Newline
+        .replace(/\t/g, "\\t")   // Tab
+        .replace(/\r/g, "\\r");  // Carriage return
+      return `"${escaped}"`;
     }
 
     if (expr.type === "BoolLiteral") {

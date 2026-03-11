@@ -51,7 +51,7 @@ class ParserIndent {
     this.skipNewlines();
 
     while (!this.match(TokenType.EOF)) {
-      if (this.match(TokenType.FN)) {
+      if (this.match(TokenType.FN, TokenType.DEF)) {
         const fn = this.parseFunction();
         if (fn) items.push(fn);
       } else if (this.match(TokenType.STRUCT)) {
@@ -75,7 +75,12 @@ class ParserIndent {
   parseFunction() {
     const line = this.peek().line;
     const column = this.peek().column;
-    this.consume(TokenType.FN, "Expected 'fn'");
+    const isFn = this.match(TokenType.FN);
+    if (isFn) {
+      this.consume(TokenType.FN, "Expected 'fn'");
+    } else {
+      this.consume(TokenType.DEF, "Expected 'def'");
+    }
 
     const nameToken = this.peek();
     if (!nameToken || nameToken.type !== TokenType.IDENTIFIER) {
@@ -98,6 +103,17 @@ class ParserIndent {
         parameters.push({ name: paramName, type: typeName });
       } else {
         parameters.push({ name: paramName, type: "auto" });
+      }
+
+      // Skip default value if present (e.g., suffix: String = "!")
+      if (this.match(TokenType.ASSIGN)) {
+        this.advance();
+        // Skip until comma or RPAREN
+        while (
+          !this.match(TokenType.COMMA, TokenType.RPAREN, TokenType.EOF)
+        ) {
+          this.advance();
+        }
       }
 
       if (this.match(TokenType.COMMA)) {
