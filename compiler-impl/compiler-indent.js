@@ -13,11 +13,13 @@ const { IndentationLexer } = require("./lexer-indent");
 const { ParserIndent } = require("./parser-indent");
 const { CodeGenerator } = require("./codegen");
 const { SemanticAnalyzer } = require("./semantic-analyzer");
+const { IRGenerator } = require("./ir-generator");
 
 class MojoCompilerIndent {
-  constructor(sourceCode, filename = "untitled.mojo") {
+  constructor(sourceCode, filename = "untitled.mojo", options = {}) {
     this.sourceCode = sourceCode;
     this.filename = filename;
+    this.options = options; // { llvm: true/false }
   }
 
   compile() {
@@ -58,7 +60,22 @@ class MojoCompilerIndent {
       }
       console.log("  ✓ Semantic analysis complete");
 
-      // Phase 3: Code Generation (Python)
+      // Phase 3: LLVM IR Generation (if requested)
+      if (this.options.llvm) {
+        console.log("[3/4] Generating LLVM IR...");
+        const irGenerator = new IRGenerator();
+        const llvmIR = irGenerator.generate(program);
+        console.log("  ✓ LLVM IR generation complete");
+
+        return {
+          success: true,
+          llvmIR,
+          pythonCode: null,
+          errors: [],
+        };
+      }
+
+      // Phase 3: Code Generation (Python) - default
       console.log("[3/4] Generating Python code...");
       const generator = new CodeGenerator();
       const pythonCode = generator.generate(program);
@@ -67,6 +84,7 @@ class MojoCompilerIndent {
       return {
         success: true,
         pythonCode,
+        llvmIR: null,
         errors: [],
       };
     } catch (e) {
@@ -75,12 +93,13 @@ class MojoCompilerIndent {
     }
   }
 
-  static compileFile(filePath) {
+  static compileFile(filePath, options = {}) {
     try {
       const sourceCode = fs.readFileSync(filePath, "utf-8");
       const compiler = new MojoCompilerIndent(
         sourceCode,
-        path.basename(filePath)
+        path.basename(filePath),
+        options
       );
       return compiler.compile();
     } catch (e) {
@@ -97,10 +116,13 @@ if (require.main === module) {
   const args = process.argv.slice(2);
 
   if (args.length === 0) {
-    console.log("Mojo Compiler (Indentation-Based) v0.1.0");
+    console.log("Mojo Compiler (Indentation-Based) v0.2.0");
     console.log(
-      "Usage: node compiler-indent.js <input.mojo> [--output output.py]"
+      "Usage: node compiler-indent.js <input.mojo> [--output output.py] [--llvm]"
     );
+    console.log("Options:");
+    console.log("  --output <file>  Write output to file");
+    console.log("  --llvm           Generate LLVM IR instead of Python");
     process.exit(1);
   }
 
@@ -108,23 +130,41 @@ if (require.main === module) {
   const outputFile = args.includes("--output")
     ? args[args.indexOf("--output") + 1]
     : null;
+  const llvmMode = args.includes("--llvm");
+  const options = { llvm: llvmMode };
 
   console.log("\n╔════════════════════════════════════════════╗");
   console.log(`║ 🔥 Compiling: ${inputFile.padEnd(38)} ║`);
+  if (llvmMode) {
+    console.log(`║ Mode: LLVM IR Generation${" ".repeat(17)} ║`);
+  }
   console.log("╚════════════════════════════════════════════╝\n");
 
-  const result = MojoCompilerIndent.compileFile(inputFile);
+  const result = MojoCompilerIndent.compileFile(inputFile, options);
 
   if (result.success) {
     console.log("\n✅ Compilation succeeded!\n");
-    console.log("Generated Python Code:");
-    console.log("─".repeat(50));
-    console.log(result.pythonCode);
-    console.log("─".repeat(50));
 
-    if (outputFile) {
-      fs.writeFileSync(outputFile, result.pythonCode);
-      console.log(`\n💾 Output saved to: ${outputFile}`);
+    if (llvmMode) {
+      console.log("Generated LLVM IR:");
+      console.log("─".repeat(50));
+      console.log(result.llvmIR);
+      console.log("─".repeat(50));
+
+      if (outputFile) {
+        fs.writeFileSync(outputFile, result.llvmIR);
+        console.log(`\n💾 Output saved to: ${outputFile}`);
+      }
+    } else {
+      console.log("Generated Python Code:");
+      console.log("─".repeat(50));
+      console.log(result.pythonCode);
+      console.log("─".repeat(50));
+
+      if (outputFile) {
+        fs.writeFileSync(outputFile, result.pythonCode);
+        console.log(`\n💾 Output saved to: ${outputFile}`);
+      }
     }
   } else {
     console.log("\n❌ Compilation failed!\n");
