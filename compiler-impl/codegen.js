@@ -57,7 +57,15 @@ class CodeGenerator {
 
   generateFunction(fn) {
     const params = fn.parameters.map((p) => p.name).join(", ");
-    this.emit(`def ${fn.name}(${params}):`);
+
+    // Handle generic types (comment them out since Python doesn't have generics)
+    let signature = `def ${fn.name}(${params}):`;
+    if (fn.generics && fn.generics.length > 0) {
+      const generics = fn.generics.join(", ");
+      signature = `# Generic types: <${generics}>\n${signature}`;
+    }
+
+    this.emit(signature);
     this.indent();
 
     if (fn.body.length === 0) {
@@ -86,6 +94,8 @@ class CodeGenerator {
   generateStatement(stmt) {
     if (stmt.type === "VariableDeclaration") {
       this.generateVarDecl(stmt);
+    } else if (stmt.type === "TupleUnpacking") {
+      this.generateTupleUnpacking(stmt);
     } else if (stmt.type === "Assignment") {
       this.generateAssignment(stmt);
     } else if (stmt.type === "ExpressionStatement") {
@@ -108,6 +118,12 @@ class CodeGenerator {
   generateVarDecl(decl) {
     const valueCode = decl.value ? this.generateExpression(decl.value) : "None";
     this.emit(`${decl.name} = ${valueCode}`);
+  }
+
+  generateTupleUnpacking(stmt) {
+    const names = stmt.names.join(", ");
+    const valueCode = stmt.value ? this.generateExpression(stmt.value) : "None";
+    this.emit(`${names} = ${valueCode}`);
   }
 
   generateAssignment(assign) {

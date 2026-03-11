@@ -184,6 +184,9 @@ class SemanticAnalyzer {
       case "VariableDeclaration":
         this.analyzeVarDecl(stmt);
         break;
+      case "TupleUnpacking":
+        this.analyzeTupleUnpacking(stmt);
+        break;
       case "Assignment":
         this.analyzeAssignment(stmt);
         break;
@@ -212,6 +215,24 @@ class SemanticAnalyzer {
     // 초기값 분석
     if (decl.value) {
       this.analyzeExpression(decl.value);
+    }
+  }
+
+  analyzeTupleUnpacking(stmt) {
+    // Tuple unpacking: (a, b) = value or a, b = value
+    // Define all variables in the tuple
+    for (const name of stmt.names) {
+      const symbol = this.currentTable.lookup(name);
+      if (!symbol) {
+        this.currentTable.define(name, "auto", stmt.line || 0);
+      } else {
+        symbol.used = true;
+      }
+    }
+
+    // Analyze the right-hand side expression
+    if (stmt.value) {
+      this.analyzeExpression(stmt.value);
     }
   }
 

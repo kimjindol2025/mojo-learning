@@ -90,6 +90,21 @@ class ParserIndent {
     const name = nameToken.value;
     this.advance();
 
+    // Parse generic type parameters if present: fn name<T> ( ... )
+    let generics = [];
+    if (this.match(TokenType.LT)) {
+      this.advance(); // consume <
+      while (!this.match(TokenType.GT) && !this.match(TokenType.EOF)) {
+        const typeParam = this.peek().value;
+        this.advance();
+        generics.push(typeParam);
+        if (this.match(TokenType.COMMA)) {
+          this.advance();
+        }
+      }
+      this.consume(TokenType.GT, "Expected '>' in generic parameters");
+    }
+
     this.consume(TokenType.LPAREN, "Expected '('");
     const parameters = [];
     while (!this.match(TokenType.RPAREN) && !this.match(TokenType.EOF)) {
@@ -155,6 +170,7 @@ class ParserIndent {
     return {
       type: "FunctionDeclaration",
       name,
+      generics,
       parameters,
       returnType,
       body,
@@ -262,8 +278,41 @@ class ParserIndent {
     const isMutable = this.match(TokenType.VAR);
     this.advance();
 
-    const name = this.peek().value;
-    this.advance();
+    // Check for tuple unpacking: let (a, b) = ... or let a, b = ...
+    let names = [];
+
+    if (this.match(TokenType.LPAREN)) {
+      // Parenthesized tuple unpacking: let (a, b) = ...
+      this.advance();
+      while (!this.match(TokenType.RPAREN) && !this.match(TokenType.EOF)) {
+        const varName = this.peek().value;
+        names.push(varName);
+        this.advance();
+        if (this.match(TokenType.COMMA)) {
+          this.advance();
+        }
+      }
+      this.consume(TokenType.RPAREN, "Expected ')' in tuple unpacking");
+    } else {
+      // Single or implicit tuple unpacking: let a, b = ... or let a = ...
+      const name = this.peek().value;
+      names.push(name);
+      this.advance();
+
+      // Check if this is multi-variable unpacking without parentheses
+      while (this.match(TokenType.COMMA)) {
+        // Look ahead to see if next is a valid identifier or end (=, :, etc)
+        const nextIdx = this.current + 1;
+        if (nextIdx < this.tokens.length && this.tokens[nextIdx].type === TokenType.IDENTIFIER) {
+          this.advance(); // consume comma
+          const nextName = this.peek().value;
+          names.push(nextName);
+          this.advance();
+        } else {
+          break;
+        }
+      }
+    }
 
     let typeAnnotation = null;
     if (this.match(TokenType.COLON)) {
@@ -281,9 +330,20 @@ class ParserIndent {
       value = this.parseExpression();
     }
 
+    // If multiple names, create TupleUnpacking node
+    if (names.length > 1) {
+      return {
+        type: "TupleUnpacking",
+        names,
+        value,
+        isMutable,
+        line,
+      };
+    }
+
     return {
       type: "VariableDeclaration",
-      name,
+      name: names[0],
       typeAnnotation,
       value,
       isMutable,
@@ -486,6 +546,44 @@ class ParserIndent {
   }
 
   parseExpressionStatement() {
+    // Check for tuple unpacking: a, b = value (without let/var)
+    if (this.match(TokenType.IDENTIFIER)) {
+      const identPos = this.current;
+      const firstName = this.peek().value;
+      this.advance();
+
+      // Check if next is COMMA (tuple unpacking)
+      if (this.match(TokenType.COMMA)) {
+        const names = [firstName];
+        while (this.match(TokenType.COMMA)) {
+          this.advance();
+          if (this.match(TokenType.IDENTIFIER)) {
+            names.push(this.peek().value);
+            this.advance();
+          }
+        }
+
+        // Now expect = for assignment
+        if (this.match(TokenType.ASSIGN)) {
+          this.advance();
+          const value = this.parseExpression();
+          return {
+            type: "TupleUnpacking",
+            names,
+            value,
+            isMutable: false,
+            line: this.tokens[identPos].line,
+          };
+        } else {
+          // Not a tuple unpacking assignment, backtrack and parse as expression
+          this.current = identPos;
+        }
+      } else {
+        // Not a tuple unpacking, backtrack and continue normal parsing
+        this.current = identPos;
+      }
+    }
+
     const expr = this.parseExpression();
 
     // Assignment: identifier = value, +=, -=, *=, /=
