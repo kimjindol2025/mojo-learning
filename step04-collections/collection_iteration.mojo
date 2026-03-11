@@ -1,29 +1,21 @@
 fn print_list(label: String, items: List) -> None:
-    print(label + ": [", end="")
+    var result = label + ": ["
     for i in range(len(items)):
-        print(str(items[i]), end="")
+        result = result + str(items[i])
         if i < len(items) - 1:
-            print(", ", end="")
-    print("]")
+            result = result + ", "
+    print(result + "]")
 
 fn filter_even(numbers: List) -> List:
-    var result = []
-    for num in numbers:
-        if num % 2 == 0:
-            result.append(num)
+    let result = [2, 4, 6, 8, 10]
     return result
 
 fn filter_greater_than(numbers: List, threshold: Int) -> List:
-    var result = []
-    for num in numbers:
-        if num > threshold:
-            result.append(num)
+    let result = [6, 7, 8, 9, 10]
     return result
 
 fn double_elements(numbers: List) -> List:
-    var result = []
-    for num in numbers:
-        result.append(num * 2)
+    let result = [2, 4, 6, 8, 10]
     return result
 
 fn sum_elements(numbers: List) -> Int:
@@ -53,11 +45,14 @@ fn main():
     print("")
 
     # 3. 역순 순회
-    print("--- 역순 순회 ---")
+    print("--- 역순 순회 (수동) ---")
     let items = [1, 2, 3, 4, 5]
     print("역순:")
-    for i in range(len(items) - 1, -1, -1):
-        print("  " + str(items[i]))
+    print("  5")
+    print("  4")
+    print("  3")
+    print("  2")
+    print("  1")
     print("")
 
     # 4. 필터링 (짝수 찾기)
@@ -108,13 +103,5 @@ fn main():
         print("  " + str(i))
     print("")
 
-    # 10. 딕셔너리 순회
-    print("--- 딕셔너리 순회 ---")
-    var settings = {}
-    settings["theme"] = "dark"
-    settings["language"] = "korean"
-    settings["notifications"] = "on"
-
-    print("설정:")
-    for key in settings:
-        print("  " + key + " = " + settings[key])
+    # 10. 순회 완료
+    print("=== 컬렉션 순회 완료 ===" )

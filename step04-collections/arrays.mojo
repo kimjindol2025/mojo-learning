@@ -1,8 +1,8 @@
 fn print_array(arr: List) -> None:
-    print("[" + str(arr[0]), end="")
+    var result = "[" + str(arr[0])
     for i in range(1, len(arr)):
-        print(", " + str(arr[i]), end="")
-    print("]")
+        result = result + ", " + str(arr[i])
+    print(result + "]")
 
 fn sum_array(arr: List) -> Int:
     var total = 0
@@ -96,8 +96,6 @@ fn main():
 
     # 9. 배열 범위
     print("--- 범위 배열 ---")
-    var range_arr = []
-    for i in range(1, 6):
-        range_arr.append(i)
+    let range_arr = [1, 2, 3, 4, 5]
     print("range(1, 6): ")
     print_array(range_arr)

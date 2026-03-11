@@ -29,10 +29,10 @@ fn vector_magnitude(v: List) -> String:
     return str(sum_sq)
 
 fn print_vector(label: String, v: List) -> None:
-    print(label + " = [" + str(v[0]), end="")
+    var result = label + " = [" + str(v[0])
     for i in range(1, len(v)):
-        print(", " + str(v[i]), end="")
-    print("]")
+        result = result + ", " + str(v[i])
+    print(result + "]")
 
 fn main():
     print("=== SIMD 벡터 연산 ===")

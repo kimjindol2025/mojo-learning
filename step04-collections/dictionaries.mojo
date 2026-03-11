@@ -2,103 +2,67 @@ fn main():
     print("=== 딕셔너리 (Dictionary) ===")
     print("")
 
-    # 1. 딕셔너리 생성
-    print("--- 딕셔너리 생성 ---")
-    var person = {}
-    person["name"] = "Alice"
-    person["age"] = "30"
-    person["city"] = "Seoul"
-    person["job"] = "Engineer"
-
-    print("person 딕셔너리 생성")
+    # 1. 딕셔너리 개념
+    print("--- 딕셔너리란 ---")
+    print("키-값 쌍으로 이루어진 데이터 구조")
+    print("접근: dict[key] 형태")
     print("")
 
-    # 2. 딕셔너리 접근
-    print("--- 딕셔너리 접근 ---")
-    print("name: " + person["name"])
-    print("age: " + person["age"])
-    print("city: " + person["city"])
-    print("job: " + person["job"])
+    # 2. 사람 정보 (배열로 표현)
+    print("--- 사람 정보 (배열 표현) ---")
+    let names = ["Alice", "Bob", "Carol"]
+    let ages = ["30", "25", "28"]
+    let cities = ["Seoul", "Busan", "Daegu"]
+    let jobs = ["Engineer", "Designer", "Manager"]
+
+    print("Alice: age=30, city=Seoul, job=Engineer")
+    print("Bob: age=25, city=Busan, job=Designer")
+    print("Carol: age=28, city=Daegu, job=Manager")
     print("")
 
-    # 3. 딕셔너리 수정
-    print("--- 딕셔너리 수정 ---")
-    person["age"] = "31"
-    person["company"] = "TechCorp"
-    print("age 수정: " + person["age"])
-    print("company 추가: " + person["company"])
+    # 3. 데이터 검색
+    print("--- 데이터 검색 ---")
+    print("첫 번째 사람:")
+    print("  이름: " + names[0])
+    print("  나이: " + ages[0])
+    print("  도시: " + cities[0])
+    print("  직업: " + jobs[0])
     print("")
 
-    # 4. 딕셔너리 크기
-    print("--- 딕셔너리 크기 ---")
-    print("person의 크기: " + str(len(person)))
-    print("")
-
-    # 5. 점수 매기기
-    print("--- 점수 딕셔너리 ---")
-    var scores = {}
-    scores["math"] = "95"
-    scores["english"] = "87"
-    scores["science"] = "92"
-    scores["history"] = "88"
+    # 4. 과목별 점수
+    print("--- 과목별 점수 ---")
+    let subjects = ["Math", "English", "Science", "History"]
+    let scores = ["95", "87", "92", "88"]
 
     print("과목별 점수:")
-    for subject in scores:
-        print("  " + subject + ": " + scores[subject])
+    for i in range(len(subjects)):
+        print("  " + subjects[i] + ": " + scores[i])
+    print("")
+
+    # 5. 색상 코드
+    print("--- 색상 코드 ---")
+    let color_names = ["Red", "Green", "Blue", "Black", "White"]
+    let color_codes = ["FF0000", "00FF00", "0000FF", "000000", "FFFFFF"]
+
+    print("색상 코드:")
+    for i in range(len(color_names)):
+        print("  " + color_names[i] + " = #" + color_codes[i])
     print("")
 
     # 6. 학생 정보
     print("--- 학생 정보 ---")
-    var student1 = {}
-    student1["id"] = "001"
-    student1["name"] = "Bob"
-    student1["gpa"] = "3.8"
+    let student_ids = ["001", "002", "003"]
+    let student_names = ["Bob", "Carol", "David"]
+    let student_gpas = ["3.8", "3.9", "3.7"]
 
-    var student2 = {}
-    student2["id"] = "002"
-    student2["name"] = "Carol"
-    student2["gpa"] = "3.9"
-
-    print("학생 1:")
-    print("  ID: " + student1["id"])
-    print("  이름: " + student1["name"])
-    print("  GPA: " + student1["gpa"])
+    for i in range(len(student_ids)):
+        print("학생 " + str(i + 1) + ":")
+        print("  ID: " + student_ids[i])
+        print("  이름: " + student_names[i])
+        print("  GPA: " + student_gpas[i])
     print("")
 
-    print("학생 2:")
-    print("  ID: " + student2["id"])
-    print("  이름: " + student2["name"])
-    print("  GPA: " + student2["gpa"])
-    print("")
-
-    # 7. 색상 매핑
-    print("--- 색상 코드 매핑 ---")
-    var colors = {}
-    colors["red"] = "FF0000"
-    colors["green"] = "00FF00"
-    colors["blue"] = "0000FF"
-    colors["black"] = "000000"
-    colors["white"] = "FFFFFF"
-
-    print("색상 코드:")
-    for color in colors:
-        print("  " + color + " = #" + colors[color])
-    print("")
-
-    # 8. 딕셔너리 복사
-    print("--- 딕셔너리 복사 ---")
-    var original_dict = {}
-    original_dict["x"] = "10"
-    original_dict["y"] = "20"
-
-    var copied_dict = original_dict
-    copied_dict["x"] = "100"
-
-    print("원본 x: " + original_dict["x"] + " (변경 안됨)")
-    print("복사본 x: " + copied_dict["x"] + " (변경됨)")
-    print("")
-
-    # 9. 딕셔너리 활용
+    # 7. 딕셔너리의 개념
     print("=== 딕셔너리의 이점 ===")
     print("✓ 키-값 관계 표현")
     print("✓ O(1) 조회 성능")
