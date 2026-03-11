@@ -1,0 +1,133 @@
+{
+  "timestamp": "2026-03-11T19:02:55.485Z",
+  "summary": {
+    "total": 5,
+    "passed": 0,
+    "issues": 5
+  },
+  "results": [
+    {
+      "file": "test_scope.mojo",
+      "success": false,
+      "errors": [
+        "Unexpected token at line 9: SLASH",
+        "Unexpected token at line 9: SLASH",
+        "Unexpected token at line 9: COMMA",
+        "Unexpected token at line 10: SLASH",
+        "Unexpected token at line 10: IN",
+        "Unexpected token at line 22: SLASH",
+        "Unexpected token at line 22: SLASH",
+        "Unexpected token at line 24: SLASH",
+        "Unexpected token at line 24: SLASH",
+        "Unexpected token at line 50: SLASH",
+        "Unexpected token at line 50: SLASH",
+        "Unexpected token at line 52: SLASH",
+        "Unexpected token at line 52: SLASH"
+      ],
+      "warnings": []
+    },
+    {
+      "file": "test_undefined.mojo",
+      "success": false,
+      "errors": [
+        "Unexpected token at line 6: SLASH",
+        "Unexpected token at line 6: COLON",
+        "Unexpected token at line 10: SLASH",
+        "Unexpected token at line 10: COLON",
+        "Unexpected token at line 19: SLASH",
+        "Unexpected token at line 19: COLON",
+        "Unexpected token at line 26: SLASH",
+        "Unexpected token at line 26: COLON",
+        "Unexpected token at line 30: SLASH",
+        "Unexpected token at line 31: SLASH",
+        "Unexpected token at line 32: SLASH",
+        "Unexpected token at line 32: COLON",
+        "Unexpected token at line 37: SLASH",
+        "Unexpected token at line 37: COLON",
+        "Unexpected token at line 43: SLASH",
+        "Unexpected token at line 43: COLON",
+        "Unexpected token at line 47: SLASH",
+        "Unexpected token at line 47: COLON"
+      ],
+      "warnings": []
+    },
+    {
+      "file": "test_unused.mojo",
+      "success": false,
+      "errors": [
+        "Unexpected token at line 6: SLASH",
+        "Unexpected token at line 6: COLON",
+        "Unexpected token at line 12: SLASH",
+        "Unexpected token at line 12: COLON",
+        "Unexpected token at line 13: SLASH",
+        "Unexpected token at line 13: COLON",
+        "Unexpected token at line 19: SLASH",
+        "Unexpected token at line 19: SLASH",
+        "Unexpected token at line 19: COLON",
+        "Unexpected token at line 19: COMMA",
+        "Unexpected token at line 27: SLASH",
+        "Unexpected token at line 27: COLON",
+        "Unexpected token at line 27: IN",
+        "Unexpected token at line 30: SLASH",
+        "Unexpected token at line 30: SLASH",
+        "Unexpected token at line 38: SLASH",
+        "Unexpected token at line 38: COLON",
+        "Unexpected token at line 38: IN",
+        "Unexpected token at line 46: SLASH",
+        "Unexpected token at line 46: COLON",
+        "Unexpected token at line 47: SLASH",
+        "Unexpected token at line 47: COLON",
+        "Unexpected token at line 48: SLASH",
+        "Unexpected token at line 48: COLON",
+        "Unexpected token at line 49: SLASH",
+        "Unexpected token at line 49: COLON",
+        "Unexpected token at line 55: SLASH",
+        "Unexpected token at line 55: COLON",
+        "Unexpected token at line 55: COMMA",
+        "Unexpected token at line 57: SLASH",
+        "Unexpected token at line 65: SLASH",
+        "Unexpected token at line 65: COLON",
+        "Unexpected token at line 67: FN",
+        "Unexpected token at line 67: ARROW",
+        "Unexpected token at line 67: COLON",
+        "Unexpected token at line 68: INDENT",
+        "Unexpected token at line 68: SLASH"
+      ],
+      "warnings": []
+    },
+    {
+      "file": "test_builtins.mojo",
+      "success": false,
+      "errors": [
+        "Unexpected token at line 6: SLASH",
+        "Unexpected token at line 6: SLASH",
+        "Unexpected token at line 10: SLASH",
+        "Unexpected token at line 10: SLASH",
+        "Unexpected token at line 15: SLASH",
+        "Unexpected token at line 15: SLASH",
+        "Unexpected token at line 19: SLASH",
+        "Unexpected token at line 19: SLASH",
+        "Unexpected token at line 52: SLASH",
+        "Unexpected token at line 52: SLASH",
+        "Unexpected token at line 52: IN",
+        "Unexpected token at line 52: IN",
+        "Unexpected token at line 53: SLASH",
+        "Unexpected token at line 54: SLASH",
+        "Unexpected token at line 54: SLASH",
+        "Unexpected token at line 54: IN",
+        "Unexpected token at line 54: IN"
+      ],
+      "warnings": []
+    },
+    {
+      "file": "test_overload.mojo",
+      "success": false,
+      "errors": [
+        "Unexpected token at line 100: SLASH",
+        "Unexpected token at line 101: SLASH",
+        "Unexpected token at line 101: COMMA"
+      ],
+      "warnings": []
+    }
+  ]
+}

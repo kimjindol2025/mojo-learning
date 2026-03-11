@@ -1,0 +1,8 @@
+{
+  "timestamp": "2026-03-12T04:00:00.000Z",
+  "file": "test-cases.mojo",
+  "success": true,
+  "errors": [],
+  "warnings": [],
+  "validationNotes": "Reference output generated from JS semantic analyzer. When Mojo environment is available, semantic-analyzer.mojo output should match this format and error/warning counts."
+}
