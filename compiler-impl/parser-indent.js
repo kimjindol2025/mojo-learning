@@ -366,7 +366,13 @@ class ParserIndent {
     const line = this.peek().line;
     this.consume(TokenType.RETURN, "Expected 'return'");
     let value = null;
-    if (!this.match(TokenType.NEWLINE, TokenType.DEDENT, TokenType.EOF)) {
+
+    // Skip newline if present (for multi-line returns)
+    if (this.match(TokenType.NEWLINE)) {
+      this.advance();
+    }
+
+    if (!this.match(TokenType.DEDENT, TokenType.EOF, TokenType.INDENT)) {
       value = this.parseExpression();
     }
 
@@ -379,7 +385,10 @@ class ParserIndent {
 
   parseMatchExpression() {
     this.consume(TokenType.MATCH, "Expected 'match'");
-    const discriminant = this.parseLogicalOr(); // Use lower precedence to avoid recursion
+
+    // Parse discriminant: limit to prevent stack overflow
+    // Use parseMultiplicative to support division: code / 100
+    const discriminant = this.parseMultiplicative();
 
     // Check for brace-based match
     if (this.match(TokenType.LBRACE)) {
@@ -396,6 +405,14 @@ class ParserIndent {
     let defaultBranch = null;
 
     while (!this.match(TokenType.RBRACE) && !this.match(TokenType.EOF)) {
+      this.skipNewlines();
+      // Skip INDENT/DEDENT tokens within match block
+      while (this.match(TokenType.INDENT, TokenType.DEDENT)) {
+        this.advance();
+      }
+
+      if (this.match(TokenType.RBRACE)) break;
+
       if (this.match(TokenType.ELSE)) {
         this.advance();
         this.consume(TokenType.LBRACE, "Expected '{' for else arm");
@@ -482,6 +499,10 @@ class ParserIndent {
   }
 
   parseExpression() {
+    // Handle match expression at expression level to prevent infinite recursion
+    if (this.match(TokenType.MATCH)) {
+      return this.parseMatchExpression();
+    }
     return this.parseLogicalOr();
   }
 
@@ -701,10 +722,8 @@ class ParserIndent {
   }
 
   parsePrimary() {
-    // Match expression
-    if (this.match(TokenType.MATCH)) {
-      return this.parseMatchExpression();
-    }
+    // Removed match expression from here to prevent infinite recursion
+    // Match is now handled at expression level
 
     if (this.match(TokenType.INTEGER)) {
       const value = this.peek().value;
