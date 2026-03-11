@@ -111,25 +111,22 @@ class ParserIndent {
       const paramName = this.peek().value;
       this.advance();
 
+      let paramType = "auto";
       if (this.match(TokenType.COLON)) {
         this.advance();
-        const typeName = this.peek().value;
+        paramType = this.peek().value;
         this.advance();
-        parameters.push({ name: paramName, type: typeName });
-      } else {
-        parameters.push({ name: paramName, type: "auto" });
       }
 
-      // Skip default value if present (e.g., suffix: String = "!")
+      // Parse default value if present (e.g., x: Int = 10)
+      let defaultValue = null;
       if (this.match(TokenType.ASSIGN)) {
         this.advance();
-        // Skip until comma or RPAREN
-        while (
-          !this.match(TokenType.COMMA, TokenType.RPAREN, TokenType.EOF)
-        ) {
-          this.advance();
-        }
+        // Parse constant expression for default value
+        defaultValue = this.parsePrimary();
       }
+
+      parameters.push({ name: paramName, type: paramType, defaultValue });
 
       if (this.match(TokenType.COMMA)) {
         this.advance();

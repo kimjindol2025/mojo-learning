@@ -56,7 +56,14 @@ class CodeGenerator {
   }
 
   generateFunction(fn) {
-    const params = fn.parameters.map((p) => p.name).join(", ");
+    // Generate parameters with default values
+    const params = fn.parameters.map((p) => {
+      if (p.defaultValue) {
+        const defaultCode = this.generateExpression(p.defaultValue);
+        return `${p.name}=${defaultCode}`;
+      }
+      return p.name;
+    }).join(", ");
 
     // Handle generic types (comment them out since Python doesn't have generics)
     let signature = `def ${fn.name}(${params}):`;
