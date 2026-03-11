@@ -442,12 +442,14 @@ class ParserIndent {
     this.consume(TokenType.RETURN, "Expected 'return'");
     let value = null;
 
-    // Skip newline if present (for multi-line returns)
-    if (this.match(TokenType.NEWLINE)) {
+    // Skip newlines and indentation tokens (for multi-line returns)
+    this.skipNewlines();
+    while (this.match(TokenType.INDENT, TokenType.DEDENT)) {
       this.advance();
     }
+    this.skipNewlines();
 
-    if (!this.match(TokenType.DEDENT, TokenType.EOF, TokenType.INDENT)) {
+    if (!this.match(TokenType.DEDENT, TokenType.EOF)) {
       value = this.parseExpression();
     }
 
@@ -461,9 +463,24 @@ class ParserIndent {
   parseMatchExpression() {
     this.consume(TokenType.MATCH, "Expected 'match'");
 
-    // Parse discriminant: limit to prevent stack overflow
-    // Use parseMultiplicative to support division: code / 100
-    const discriminant = this.parseMultiplicative();
+    // Parse discriminant carefully to avoid parsing struct literals
+    // CRITICAL: Don't use parseMultiplicative/parseAdditive because they call parsePostfix
+    //           which treats "identifier {" as struct literal!
+    let discriminant = this.parsePrimary();
+
+    // Support binary operations on discriminant but stop at LBRACE
+    while (this.match(TokenType.SLASH, TokenType.STAR, TokenType.PERCENT,
+                       TokenType.PLUS, TokenType.MINUS)) {
+      const op = this.peek().value;
+      this.advance();
+      const right = this.parsePrimary();
+      discriminant = {
+        type: "BinaryOp",
+        operator: op,
+        left: discriminant,
+        right,
+      };
+    }
 
     // Skip newlines and indentation before match body
     this.skipNewlines();
