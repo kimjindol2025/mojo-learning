@@ -10,12 +10,14 @@
 const fs = require("fs");
 const path = require("path");
 const { spawn } = require("child_process");
+const { execSync } = require("child_process");
 const { IndentationLexer } = require("./lexer-indent");
 const { ParserIndent } = require("./parser-indent");
 const { CodeGenerator } = require("./codegen");
 const { SemanticAnalyzer } = require("./semantic-analyzer");
 const { IRGenerator } = require("./ir-generator");
 const { MachineCodeGenerator } = require("./machine-codegen");
+const { AssemblyGenerator } = require("./asm-generator");
 
 class MojoCompilerIndent {
   constructor(sourceCode, filename = "untitled.mojo", options = {}) {
@@ -63,13 +65,30 @@ class MojoCompilerIndent {
       console.log("  ✓ Semantic analysis complete");
 
       // Phase 3: LLVM IR Generation (if requested)
-      if (this.options.llvm || this.options.machine) {
+      if (this.options.llvm || this.options.machine || this.options.asm) {
         console.log("[3/4] Generating LLVM IR...");
         const irGenerator = new IRGenerator();
         const llvmIR = irGenerator.generate(program);
         console.log("  ✓ LLVM IR generation complete");
 
-        // Phase 4: Machine Code Generation (if requested)
+        // Phase 4a: x86-64 Assembly Generation (if requested)
+        if (this.options.asm) {
+          console.log("[4/5] Generating x86-64 assembly...");
+          const asmGenerator = new AssemblyGenerator();
+          const asmCode = asmGenerator.generate(llvmIR);
+          console.log("  ✓ Assembly generation complete");
+
+          return {
+            success: true,
+            asmCode,
+            llvmIR,
+            pythonCode: null,
+            cCode: null,
+            errors: [],
+          };
+        }
+
+        // Phase 4b: Machine Code Generation (C intermediate)
         if (this.options.machine) {
           console.log("[4/5] Generating C code...");
           const machineGenerator = new MachineCodeGenerator();
@@ -81,6 +100,7 @@ class MojoCompilerIndent {
             cCode,
             llvmIR,
             pythonCode: null,
+            asmCode: null,
             errors: [],
           };
         }
@@ -90,6 +110,7 @@ class MojoCompilerIndent {
           llvmIR,
           pythonCode: null,
           cCode: null,
+          asmCode: null,
           errors: [],
         };
       }
@@ -105,6 +126,7 @@ class MojoCompilerIndent {
         pythonCode,
         llvmIR: null,
         cCode: null,
+        asmCode: null,
         errors: [],
       };
     } catch (e) {
@@ -136,15 +158,17 @@ if (require.main === module) {
   const args = process.argv.slice(2);
 
   if (args.length === 0) {
-    console.log("Mojo Compiler (Indentation-Based) v0.3.0");
+    console.log("Mojo Compiler (Indentation-Based) v0.4.0");
     console.log(
-      "Usage: node compiler-indent.js <input.mojo> [--output output.py] [--llvm] [--machine] [--binary]"
+      "Usage: node compiler-indent.js <input.mojo> [--output output] [--llvm] [--machine] [--asm] [--binary] [--asm-binary]"
     );
     console.log("Options:");
     console.log("  --output <file>  Write output to file");
-    console.log("  --llvm           Generate LLVM IR instead of Python");
+    console.log("  --llvm           Generate LLVM IR");
     console.log("  --machine        Generate C code from LLVM IR");
-    console.log("  --binary <name>  Compile to native executable (requires gcc)");
+    console.log("  --asm            Generate x86-64 assembly");
+    console.log("  --binary <name>  Compile via C to executable");
+    console.log("  --asm-binary <n> Compile via assembly to executable (direct)");
     process.exit(1);
   }
 
@@ -155,8 +179,18 @@ if (require.main === module) {
   const llvmMode = args.includes("--llvm");
   const machineMode = args.includes("--machine");
   const binaryMode = args.includes("--binary");
-  const binaryName = binaryMode ? args[args.indexOf("--binary") + 1] || "a.out" : null;
-  const options = { llvm: llvmMode || machineMode || binaryMode, machine: machineMode || binaryMode };
+  const asmMode = args.includes("--asm");
+  const asmBinaryMode = args.includes("--asm-binary");
+
+  const binaryName = (binaryMode || asmBinaryMode)
+    ? args[args.indexOf(binaryMode ? "--binary" : "--asm-binary") + 1] || "a.out"
+    : null;
+
+  const options = {
+    llvm: llvmMode || machineMode || asmMode || binaryMode || asmBinaryMode,
+    machine: machineMode || binaryMode,
+    asm: asmMode || asmBinaryMode
+  };
 
   console.log("\n╔════════════════════════════════════════════╗");
   console.log(`║ 🔥 Compiling: ${inputFile.padEnd(38)} ║`);
@@ -170,7 +204,36 @@ if (require.main === module) {
   if (result.success) {
     console.log("\n✅ Compilation succeeded!\n");
 
-    if (machineMode || binaryMode) {
+    if (asmMode || asmBinaryMode) {
+      console.log("Generated x86-64 Assembly:");
+      console.log("─".repeat(50));
+      console.log(result.asmCode);
+      console.log("─".repeat(50));
+
+      // Save assembly
+      const asmFileName = outputFile || (asmBinaryMode ? binaryName + ".s" : "output.s");
+      fs.writeFileSync(asmFileName, result.asmCode);
+      console.log(`\n💾 Assembly saved to: ${asmFileName}`);
+
+      // Assemble and link if binary mode
+      if (asmBinaryMode) {
+        console.log(`\n[5/5] Assembling and linking to native executable: ${binaryName}...`);
+
+        try {
+          // Use gcc to assemble and link (ensures proper initialization and linking)
+          const gccCmd = `gcc -o ${binaryName} ${asmFileName}`;
+          execSync(gccCmd, { stdio: "pipe" });
+          console.log(`  ✓ Assembly and linking complete`);
+
+          console.log(`\n🚀 Executable created: ${binaryName}`);
+          console.log(`   Run with: ./${binaryName}`);
+        } catch (e) {
+          console.log(`\n⚠️  Compilation failed:`);
+          console.log(e.stderr ? e.stderr.toString() : e.message);
+          console.log(`\nAssembly code is available: ${asmFileName}`);
+        }
+      }
+    } else if (machineMode || binaryMode) {
       console.log("Generated C Code:");
       console.log("─".repeat(50));
       console.log(result.cCode);
