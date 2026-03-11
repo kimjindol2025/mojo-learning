@@ -270,6 +270,15 @@ class CodeGenerator {
       return `[${elements}]`;
     }
 
+    if (expr.type === "TupleLiteral") {
+      const elements = expr.elements.map((e) => this.generateExpression(e)).join(", ");
+      // Python tuple syntax: (x,) for single element, (x, y) for multiple
+      if (expr.elements.length === 1) {
+        return `(${elements},)`;
+      }
+      return `(${elements})`;
+    }
+
     if (expr.type === "FieldAccess") {
       const object = this.generateExpression(expr.object);
       return `${object}.${expr.field}`;

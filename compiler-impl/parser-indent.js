@@ -125,8 +125,23 @@ class ParserIndent {
     let returnType = "void";
     if (this.match(TokenType.ARROW)) {
       this.advance();
-      returnType = this.peek().value;
-      this.advance();
+      // Parse return type (could be simple or tuple)
+      if (this.match(TokenType.LPAREN)) {
+        // Tuple type: (Type, Type, ...)
+        this.advance();
+        const types = [];
+        while (!this.match(TokenType.RPAREN) && !this.match(TokenType.EOF)) {
+          types.push(this.peek().value);
+          this.advance();
+          if (this.match(TokenType.COMMA)) this.advance();
+        }
+        this.consume(TokenType.RPAREN, "Expected ')'");
+        returnType = { type: "tuple", types };
+      } else {
+        // Simple type
+        returnType = this.peek().value;
+        this.advance();
+      }
     }
 
     this.consume(TokenType.COLON, "Expected ':'");
@@ -768,9 +783,32 @@ class ParserIndent {
 
     if (this.match(TokenType.LPAREN)) {
       this.advance();
-      const expr = this.parseExpression();
-      this.consume(TokenType.RPAREN, "Expected ')'");
-      return expr;
+
+      // Check for empty tuple
+      if (this.match(TokenType.RPAREN)) {
+        this.advance();
+        return { type: "TupleLiteral", elements: [] };
+      }
+
+      const firstExpr = this.parseExpression();
+
+      // Check if tuple (has comma) or just parenthesized expression
+      if (this.match(TokenType.COMMA)) {
+        // Tuple literal
+        const elements = [firstExpr];
+        while (this.match(TokenType.COMMA) && !this.match(TokenType.RPAREN)) {
+          this.advance();
+          if (!this.match(TokenType.RPAREN)) {
+            elements.push(this.parseExpression());
+          }
+        }
+        this.consume(TokenType.RPAREN, "Expected ')'");
+        return { type: "TupleLiteral", elements };
+      } else {
+        // Just parenthesized expression
+        this.consume(TokenType.RPAREN, "Expected ')'");
+        return firstExpr;
+      }
     }
 
     this.errors.push(`Unexpected token at line ${this.peek().line}: ${this.peek().type}`);
