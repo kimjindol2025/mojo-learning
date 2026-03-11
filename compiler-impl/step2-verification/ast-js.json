@@ -1,0 +1,519 @@
+{
+  "type": "Program",
+  "items": [
+    {
+      "type": "FunctionDeclaration",
+      "name": "add",
+      "generics": [],
+      "parameters": [
+        {
+          "name": "a",
+          "type": "Int",
+          "defaultValue": null,
+          "isVariadic": false
+        },
+        {
+          "name": "b",
+          "type": "Int",
+          "defaultValue": null,
+          "isVariadic": false
+        }
+      ],
+      "returnType": "Int",
+      "body": [
+        {
+          "type": "ReturnStatement",
+          "value": {
+            "type": "BinaryOp",
+            "operator": "+",
+            "left": {
+              "type": "Identifier",
+              "name": "a"
+            },
+            "right": {
+              "type": "Identifier",
+              "name": "b"
+            }
+          },
+          "line": 3
+        }
+      ],
+      "line": 2,
+      "column": 1
+    },
+    {
+      "type": "FunctionDeclaration",
+      "name": "test_vars",
+      "generics": [],
+      "parameters": [],
+      "returnType": "void",
+      "body": [
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "x"
+          },
+          "operator": "=",
+          "value": {
+            "type": "IntLiteral",
+            "value": 5
+          }
+        },
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "y"
+          },
+          "operator": "=",
+          "value": {
+            "type": "IntLiteral",
+            "value": 10
+          }
+        },
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "z"
+          },
+          "operator": "=",
+          "value": {
+            "type": "BinaryOp",
+            "operator": "+",
+            "left": {
+              "type": "Identifier",
+              "name": "x"
+            },
+            "right": {
+              "type": "Identifier",
+              "name": "y"
+            }
+          }
+        },
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "result"
+          },
+          "operator": "=",
+          "value": {
+            "type": "BinaryOp",
+            "operator": "*",
+            "left": {
+              "type": "Identifier",
+              "name": "z"
+            },
+            "right": {
+              "type": "IntLiteral",
+              "value": 2
+            }
+          }
+        }
+      ],
+      "line": 6,
+      "column": 1
+    },
+    {
+      "type": "FunctionDeclaration",
+      "name": "test_if",
+      "generics": [],
+      "parameters": [
+        {
+          "name": "n",
+          "type": "Int",
+          "defaultValue": null,
+          "isVariadic": false
+        }
+      ],
+      "returnType": "Int",
+      "body": [
+        {
+          "type": "IfStatement",
+          "condition": {
+            "type": "BinaryOp",
+            "operator": ">",
+            "left": {
+              "type": "Identifier",
+              "name": "n"
+            },
+            "right": {
+              "type": "IntLiteral",
+              "value": 0
+            }
+          },
+          "thenBranch": [
+            {
+              "type": "ReturnStatement",
+              "value": {
+                "type": "IntLiteral",
+                "value": 1
+              },
+              "line": 15
+            }
+          ],
+          "elseBranch": [
+            {
+              "type": "ReturnStatement",
+              "value": {
+                "type": "IntLiteral",
+                "value": 0
+              },
+              "line": 17
+            }
+          ],
+          "line": 14
+        }
+      ],
+      "line": 13,
+      "column": 1
+    },
+    {
+      "type": "FunctionDeclaration",
+      "name": "test_loop",
+      "generics": [],
+      "parameters": [
+        {
+          "name": "n",
+          "type": "Int",
+          "defaultValue": null,
+          "isVariadic": false
+        }
+      ],
+      "returnType": "Int",
+      "body": [
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "sum"
+          },
+          "operator": "=",
+          "value": {
+            "type": "IntLiteral",
+            "value": 0
+          }
+        },
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "i"
+          },
+          "operator": "=",
+          "value": {
+            "type": "IntLiteral",
+            "value": 1
+          }
+        },
+        {
+          "type": "WhileLoop",
+          "condition": {
+            "type": "BinaryOp",
+            "operator": "<=",
+            "left": {
+              "type": "Identifier",
+              "name": "i"
+            },
+            "right": {
+              "type": "Identifier",
+              "name": "n"
+            }
+          },
+          "body": [
+            {
+              "type": "Assignment",
+              "target": {
+                "type": "Identifier",
+                "name": "sum"
+              },
+              "operator": "=",
+              "value": {
+                "type": "BinaryOp",
+                "operator": "+",
+                "left": {
+                  "type": "Identifier",
+                  "name": "sum"
+                },
+                "right": {
+                  "type": "Identifier",
+                  "name": "i"
+                }
+              }
+            },
+            {
+              "type": "Assignment",
+              "target": {
+                "type": "Identifier",
+                "name": "i"
+              },
+              "operator": "=",
+              "value": {
+                "type": "BinaryOp",
+                "operator": "+",
+                "left": {
+                  "type": "Identifier",
+                  "name": "i"
+                },
+                "right": {
+                  "type": "IntLiteral",
+                  "value": 1
+                }
+              }
+            }
+          ],
+          "line": 23
+        },
+        {
+          "type": "ReturnStatement",
+          "value": {
+            "type": "Identifier",
+            "name": "sum"
+          },
+          "line": 26
+        }
+      ],
+      "line": 20,
+      "column": 1
+    },
+    {
+      "type": "FunctionDeclaration",
+      "name": "test_literals",
+      "generics": [],
+      "parameters": [],
+      "returnType": "void",
+      "body": [
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "name"
+          },
+          "operator": "=",
+          "value": {
+            "type": "StringLiteral",
+            "value": "hello"
+          }
+        },
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "count"
+          },
+          "operator": "=",
+          "value": {
+            "type": "IntLiteral",
+            "value": 42
+          }
+        },
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "ratio"
+          },
+          "operator": "=",
+          "value": {
+            "type": "FloatLiteral",
+            "value": 3.14
+          }
+        },
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "flag"
+          },
+          "operator": "=",
+          "value": {
+            "type": "BoolLiteral",
+            "value": true
+          }
+        },
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "items"
+          },
+          "operator": "=",
+          "value": {
+            "type": "ArrayLiteral",
+            "elements": [
+              {
+                "type": "IntLiteral",
+                "value": 1
+              },
+              {
+                "type": "IntLiteral",
+                "value": 2
+              },
+              {
+                "type": "IntLiteral",
+                "value": 3
+              }
+            ]
+          }
+        }
+      ],
+      "line": 29,
+      "column": 1
+    },
+    {
+      "type": "FunctionDeclaration",
+      "name": "fibonacci",
+      "generics": [],
+      "parameters": [
+        {
+          "name": "n",
+          "type": "Int",
+          "defaultValue": null,
+          "isVariadic": false
+        }
+      ],
+      "returnType": "Int",
+      "body": [
+        {
+          "type": "IfStatement",
+          "condition": {
+            "type": "BinaryOp",
+            "operator": "<=",
+            "left": {
+              "type": "Identifier",
+              "name": "n"
+            },
+            "right": {
+              "type": "IntLiteral",
+              "value": 1
+            }
+          },
+          "thenBranch": [
+            {
+              "type": "ReturnStatement",
+              "value": {
+                "type": "Identifier",
+                "name": "n"
+              },
+              "line": 39
+            }
+          ],
+          "elseBranch": [
+            {
+              "type": "ReturnStatement",
+              "value": {
+                "type": "BinaryOp",
+                "operator": "+",
+                "left": {
+                  "type": "Call",
+                  "function": {
+                    "type": "Identifier",
+                    "name": "fibonacci"
+                  },
+                  "arguments": [
+                    {
+                      "type": "BinaryOp",
+                      "operator": "-",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "n"
+                      },
+                      "right": {
+                        "type": "IntLiteral",
+                        "value": 1
+                      }
+                    }
+                  ]
+                },
+                "right": {
+                  "type": "Call",
+                  "function": {
+                    "type": "Identifier",
+                    "name": "fibonacci"
+                  },
+                  "arguments": [
+                    {
+                      "type": "BinaryOp",
+                      "operator": "-",
+                      "left": {
+                        "type": "Identifier",
+                        "name": "n"
+                      },
+                      "right": {
+                        "type": "IntLiteral",
+                        "value": 2
+                      }
+                    }
+                  ]
+                }
+              },
+              "line": 41
+            }
+          ],
+          "line": 38
+        }
+      ],
+      "line": 37,
+      "column": 1
+    },
+    {
+      "type": "FunctionDeclaration",
+      "name": "main",
+      "generics": [],
+      "parameters": [],
+      "returnType": "void",
+      "body": [
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "x"
+          },
+          "operator": "=",
+          "value": {
+            "type": "Call",
+            "function": {
+              "type": "Identifier",
+              "name": "add"
+            },
+            "arguments": [
+              {
+                "type": "IntLiteral",
+                "value": 5
+              },
+              {
+                "type": "IntLiteral",
+                "value": 3
+              }
+            ]
+          }
+        },
+        {
+          "type": "Assignment",
+          "target": {
+            "type": "Identifier",
+            "name": "result"
+          },
+          "operator": "=",
+          "value": {
+            "type": "Call",
+            "function": {
+              "type": "Identifier",
+              "name": "fibonacci"
+            },
+            "arguments": [
+              {
+                "type": "IntLiteral",
+                "value": 10
+              }
+            ]
+          }
+        }
+      ],
+      "line": 43,
+      "column": 1
+    }
+  ]
+}
