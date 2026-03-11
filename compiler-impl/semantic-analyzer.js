@@ -144,6 +144,16 @@ class SemanticAnalyzer {
   }
 
   analyzeFunctionDecl(func) {
+    // 제네릭 제약 조건 처리 (Phase 11)
+    if (func.generics && func.generics.length > 0) {
+      for (const generic of func.generics) {
+        if (generic.constraint) {
+          // 제약 조건 저장 (추후 타입 검증 시 사용)
+          // TODO: constraint 실제 검증 구현 (Phase 11+)
+        }
+      }
+    }
+
     // 함수 이름 정의 (오버로딩 지원)
     const paramTypes = func.parameters.map(p => p.type || "auto");
     const signature = `${func.name}(${paramTypes.join(",")})`;

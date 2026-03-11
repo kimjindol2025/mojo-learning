@@ -75,7 +75,9 @@ class CodeGenerator {
     // Handle generic types (comment them out since Python doesn't have generics)
     let signature = `def ${fn.name}(${params}):`;
     if (fn.generics && fn.generics.length > 0) {
-      const generics = fn.generics.join(", ");
+      const generics = fn.generics
+        .map(g => g.constraint ? `${g.name}: ${g.constraint}` : g.name)
+        .join(", ");
       signature = `# Generic types: <${generics}>\n${signature}`;
     }
 

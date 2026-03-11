@@ -90,14 +90,26 @@ class ParserIndent {
     const name = nameToken.value;
     this.advance();
 
-    // Parse generic type parameters if present: fn name<T> ( ... )
+    // Parse generic type parameters with optional constraints: fn name<T, U: Numeric> ( ... )
     let generics = [];
     if (this.match(TokenType.LT)) {
       this.advance(); // consume <
       while (!this.match(TokenType.GT) && !this.match(TokenType.EOF)) {
         const typeParam = this.peek().value;
         this.advance();
-        generics.push(typeParam);
+
+        // Check for constraint: T: Numeric
+        let constraint = null;
+        if (this.match(TokenType.COLON)) {
+          this.advance();
+          if (this.match(TokenType.IDENTIFIER)) {
+            constraint = this.peek().value;
+            this.advance();
+          }
+        }
+
+        generics.push({ name: typeParam, constraint });
+
         if (this.match(TokenType.COMMA)) {
           this.advance();
         }
