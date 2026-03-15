@@ -14,12 +14,12 @@ Phase 16 Compiler Implementation (14주)
 Week 1 (Mar 12-18):  Step 1-2   [COMPLETE]  ✅ Lexer + Parser
 Week 2 (Mar 19-25):  Step 3     [COMPLETE]  ✅ Semantic Analyzer
 Week 3 (Mar 26-Apr1):  Step 4-5 [COMPLETE]  ✅ IR Generator + Machine Code
-Week 4 (Apr 2-8):    Step 6     [0%]        ⬜ Optimization & ELF Linking
+Week 4 (Apr 2-8):    Step 6     [COMPLETE]  ✅ Optimization & ELF Linking
 Week 5 (Apr 9-15):   Step 7     [0%]        ⬜ Self-hosting Validation
 Week 6 (Apr 16-22):  Integration [0%]       ⬜ Full Pipeline Test
 Week 7 (Apr 23-30):  Finalize   [0%]        ⬜ Performance + Docs
 
-총 진행: 71% (5/7 단계 완료)
+총 진행: 86% (6/7 단계 완료)
 ```
 
 ---
@@ -123,7 +123,36 @@ Week 7 (Apr 23-30):  Finalize   [0%]        ⬜ Performance + Docs
 
 ## 🔄 In-Progress / Planned
 
-### Phase 16 Step 6: Optimization & ELF Linking (Mojo) — PLANNED
+### Phase 16 Step 6: Optimization & ELF Linking (Mojo) — COMPLETE ✅
+
+**파일:** `optimizer.mojo`, `elf-generator.mojo`, `linker.mojo` (850 줄)
+**커밋:** 110ed71
+**완료일:** 2026-03-15
+
+**성과:**
+- ✅ 4가지 고급 최적화 패스
+  - Constant propagation
+  - Dead code elimination (v2)
+  - Peephole optimization
+  - Common subexpression elimination
+- ✅ ELF 64비트 바이너리 생성
+  - ELF header (64 bytes)
+  - .text, .data, .symtab, .strtab, .shstrtab 섹션
+  - Program headers
+  - Proper alignment & byte ordering
+- ✅ 심볼 테이블 관리
+- ✅ 재배치 엔트리 생성
+- ✅ 링커 구현
+  - 10+ 런타임 심볼 (printf, malloc, free, strlen, etc.)
+  - 동적 라이브러리 링킹
+  - 심볼 해석
+  - 바이너리 패칭
+
+**검증:** 31/31 테스트 통과 (100%)
+
+---
+
+### Phase 16 Step 7: Self-hosting Validation (Mojo) — PLANNED
 
 **예상 파일:** `ir.mojo`, `ir-generator.mojo` (600-800 줄)
 **예상 기간:** 2026-03-26 ~ 2026-04-08 (2주)
