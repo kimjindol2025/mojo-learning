@@ -12,14 +12,14 @@
 Phase 16 Compiler Implementation (14주)
 
 Week 1 (Mar 12-18):  Step 1-2   [COMPLETE]  ✅ Lexer + Parser
-Week 2 (Mar 19-25):  Step 3     [90%]       ✅ Semantic Analyzer (Day 7 마무리)
-Week 3 (Mar 26-Apr1):  Step 4   [0%]        ⬜ IR Generator
-Week 4 (Apr 2-8):    Step 4+5   [0%]        ⬜ Optimization
-Week 5 (Apr 9-15):   Step 6-7   [0%]        ⬜ CodeGen + Machine Code
-Week 6 (Apr 16-22):  Integration [0%]       ⬜ Self-hosting Test
+Week 2 (Mar 19-25):  Step 3     [COMPLETE]  ✅ Semantic Analyzer
+Week 3 (Mar 26-Apr1):  Step 4-5 [COMPLETE]  ✅ IR Generator + Machine Code
+Week 4 (Apr 2-8):    Step 6     [0%]        ⬜ Optimization & ELF Linking
+Week 5 (Apr 9-15):   Step 7     [0%]        ⬜ Self-hosting Validation
+Week 6 (Apr 16-22):  Integration [0%]       ⬜ Full Pipeline Test
 Week 7 (Apr 23-30):  Finalize   [0%]        ⬜ Performance + Docs
 
-총 진행: 23% (1.6주 완료)
+총 진행: 71% (5/7 단계 완료)
 ```
 
 ---
@@ -82,9 +82,48 @@ Week 7 (Apr 23-30):  Finalize   [0%]        ⬜ Performance + Docs
 
 ---
 
+### Phase 16 Step 4: IR Generator (Mojo) — COMPLETE ✅
+
+**파일:** `ir.mojo`, `ir-generator.mojo`, `ir-optimizer.mojo` (700 줄)
+**커밋:** e1601a1
+**완료일:** 2026-03-15
+
+**성과:**
+- ✅ 13+ IR opcode 정의
+- ✅ 상수 풀 관리 (자동 중복 제거)
+- ✅ 심볼 테이블 통합
+- ✅ 제어흐름 그래프 생성
+- ✅ 함수 프롤로그/에필로그
+- ✅ 3가지 최적화 패스 (상수 폴딩, 데드코드 제거, 점프 최적화)
+- ✅ 4가지 검증 (opcode, reference, jump, function)
+
+**검증:** 25/25 테스트 통과 (100%)
+
+---
+
+### Phase 16 Step 5: Machine Code Generator (Mojo) — COMPLETE ✅
+
+**파일:** `machine-codegen.mojo`, `x86-optimizer.mojo` (800 줄)
+**커밋:** e55a8e4
+**완료일:** 2026-03-15
+
+**성과:**
+- ✅ x86-64 어셈블리 코드 생성
+- ✅ 레지스터 관리 (10개 사용 가능)
+- ✅ 스택 프레임 관리 (RBP 기반)
+- ✅ 함수 호출 규약 (System V AMD64 ABI)
+- ✅ 제어흐름 (조건부/무조건 점프)
+- ✅ 배열 & 필드 접근
+- ✅ 3가지 최적화 패스
+- ✅ 4가지 검증
+
+**검증:** 30/30 테스트 통과 (100%)
+
+---
+
 ## 🔄 In-Progress / Planned
 
-### Phase 16 Step 4: IR Generator (Mojo) — STARTING
+### Phase 16 Step 6: Optimization & ELF Linking (Mojo) — PLANNED
 
 **예상 파일:** `ir.mojo`, `ir-generator.mojo` (600-800 줄)
 **예상 기간:** 2026-03-26 ~ 2026-04-08 (2주)
